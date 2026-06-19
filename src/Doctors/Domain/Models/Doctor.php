@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string                       $name
  * @property \Carbon\CarbonImmutable|null $created_at
  * @property \Carbon\CarbonImmutable|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Doctor newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Doctor newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Doctor query()
@@ -18,9 +19,11 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Doctor whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Doctor whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Doctor whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Doctor extends Model
 {
+    #[\Override]
     protected $guarded = ['id'];
 }
