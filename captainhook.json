@@ -60,7 +60,7 @@
             { "action": "composer run-script phpstan", "options": [] },
             { "action": "composer run-script rector", "options": [] },
             { "action": "composer run-script ecs", "options": [] },
-            { "action": "vendor/bin/sail composer test" }
+            { "action": "docker exec healthcare-api-laravel.test-1 php /var/www/html/vendor/bin/pest" }
         ]
     }
 }
