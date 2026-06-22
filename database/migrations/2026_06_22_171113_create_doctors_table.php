@@ -13,7 +13,8 @@ return new class extends Migration
         Schema::create('doctors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->timestamps();
+            $table->timestamp('created_at');
+            $table->timestamp('updated_at');
         });
     }
 };
