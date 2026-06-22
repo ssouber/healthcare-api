@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('status')->default('scheduled'); // 'scheduled' | 'cancelled'
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');
-            $table->timestamp('deleted_at'); // soft delete
+            $table->softDeletes();
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });
