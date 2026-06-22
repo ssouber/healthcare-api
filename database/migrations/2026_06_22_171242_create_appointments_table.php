@@ -15,7 +15,7 @@ return new class extends Migration
             $table->foreignId('clinic_id')->constrained();
             $table->foreignId('doctor_id')->constrained();
             $table->foreignId('patient_id')->constrained();
-            $table->string('status')->default('scheduled'); // 'scheduled' | 'cancelled'
+            $table->string('status'); // 'scheduled' | 'cancelled'
             $table->timestamp('starts_at');
             $table->timestamp('ends_at');
             $table->softDeletes();
