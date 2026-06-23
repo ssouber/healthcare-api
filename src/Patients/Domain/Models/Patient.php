@@ -6,6 +6,7 @@ namespace Lightit\Patients\Domain\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Lightit\Appointments\Domain\Models\Appointment;
 
 /**
@@ -32,6 +33,8 @@ use Lightit\Appointments\Domain\Models\Appointment;
  */
 class Patient extends Model
 {
+    use SoftDeletes;
+
     #[\Override]
     protected $guarded = ['id'];
 

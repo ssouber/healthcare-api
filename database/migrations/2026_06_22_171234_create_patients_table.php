@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->softDeletes();
             $table->timestamp('created_at');
             $table->timestamp('updated_at');
         });
