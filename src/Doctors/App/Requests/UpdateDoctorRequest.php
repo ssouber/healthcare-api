@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Lightit\Doctors\App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Lightit\Doctors\Domain\DataTransferObjects\UpdateDoctorDto;
 
 class UpdateDoctorRequest extends FormRequest
@@ -14,7 +15,7 @@ class UpdateDoctorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            self::NAME => ['required', 'string', 'min:4', 'max:255'],
+            self::NAME => ['required', Rule::string(), 'min:4', 'max:255'],
         ];
     }
 

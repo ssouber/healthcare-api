@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Lightit\Doctors\App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Lightit\Clinics\Domain\Models\Clinic;
 use Lightit\Doctors\Domain\DataTransferObjects\AssignClinicsToDoctorDto;
 
 class AssignClinicsToDoctorRequest extends FormRequest
@@ -14,8 +16,8 @@ class AssignClinicsToDoctorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            self::CLINICS => ['required', 'array'],
-            self::CLINICS . '.*' => ['integer', 'exists:clinics,id'],
+            self::CLINICS => ['required', Rule::array(), Rule::in(Clinic::class)],
+            self::CLINICS . '.*' => [Rule::numeric()],
         ];
     }
 
