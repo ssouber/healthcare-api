@@ -64,5 +64,5 @@ Route::prefix('doctors')
            Route::put('/', UpdateDoctorController::class);
            Route::delete('/', DeleteDoctorController::class);
            Route::post('/clinics', AssignClinicsToDoctorController::class);
-        });
+        })->whereNumber('doctor');
     });
