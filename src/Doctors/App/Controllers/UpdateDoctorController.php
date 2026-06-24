@@ -27,6 +27,8 @@ final readonly class UpdateDoctorController
     ): JsonResponse {
         $doctor = $updateDoctorAction->execute($doctor, $request->getName());
 
+        $doctor->load('clinics');
+
         return DoctorResource::make($doctor)
             ->response();
     }
