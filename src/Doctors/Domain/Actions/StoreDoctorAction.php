@@ -16,7 +16,7 @@ class StoreDoctorAction
         $doctor->saveOrFail();
 
         if ($doctorDto->clinics !== null) {
-            $doctor->clinics()->sync($doctorDto->clinics);
+            $doctor->clinics()->syncOrFail($doctorDto->clinics);
         }
 
         return $doctor;
