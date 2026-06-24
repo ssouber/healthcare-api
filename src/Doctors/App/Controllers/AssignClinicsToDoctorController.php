@@ -17,8 +17,8 @@ final readonly class AssignClinicsToDoctorController
 {
     #[Endpoint(
         operationId: 'assignClinicsToDoctor',
-        title: 'Assign one or more clinics to a doctor',
-        description: 'Assigns one or more existing clinics to an existing doctor'
+        title: 'Assign clinics to a doctor',
+        description: 'Assign zero, one or more clinics to a doctor',
     )]
     public function __invoke(
         AssignClinicsToDoctorRequest $request,

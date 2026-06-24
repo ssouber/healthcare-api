@@ -11,7 +11,7 @@ class AssignClinicsToDoctorAction
 {
     public function execute(Doctor $doctor, AssignClinicsToDoctorDto $assignClinicsToDoctorDto): Doctor
     {
-        $doctor->clinics()->syncWithoutDetaching($assignClinicsToDoctorDto->clinics);
+        $doctor->clinics()->syncOrFail($assignClinicsToDoctorDto->clinics);
 
         return $doctor->load('clinics');
     }
