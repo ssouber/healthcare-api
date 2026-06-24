@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Lightit\Doctors\App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use Lightit\Clinics\Domain\Models\Clinic;
 use Lightit\Doctors\Domain\DataTransferObjects\DoctorDto;
 
 class StoreDoctorRequest extends FormRequest
@@ -17,8 +19,8 @@ class StoreDoctorRequest extends FormRequest
     {
         return [
             self::NAME => ['required', 'string', 'min:4', 'max:255'],
-            self::CLINICS => ['sometimes', 'array'],
-            self::CLINICS . '.*' => ['integer', 'exists:clinics,id'],
+            self::CLINICS => ['sometimes', 'array', Rule::in(Clinic::class)],
+            self::CLINICS . '.*' => [Rule::numeric()->integer()],
         ];
     }
 
