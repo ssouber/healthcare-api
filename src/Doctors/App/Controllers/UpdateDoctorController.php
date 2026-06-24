@@ -25,7 +25,7 @@ final readonly class UpdateDoctorController
         UpdateDoctorRequest $request,
         UpdateDoctorAction $updateDoctorAction,
     ): JsonResponse {
-        $doctor = $updateDoctorAction->execute($doctor, $request->toDto());
+        $doctor = $updateDoctorAction->execute($doctor, $request->getName());
 
         return DoctorResource::make($doctor)
             ->response();

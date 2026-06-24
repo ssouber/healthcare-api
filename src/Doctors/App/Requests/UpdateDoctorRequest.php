@@ -19,10 +19,8 @@ class UpdateDoctorRequest extends FormRequest
         ];
     }
 
-    public function toDto(): UpdateDoctorDto
+    public function getName(): string
     {
-        return new UpdateDoctorDto(
-            name: $this->string(self::NAME)->toString(),
-        );
+        return $this->string(self::NAME)->toString();
     }
 }

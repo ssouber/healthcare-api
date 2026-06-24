@@ -9,9 +9,9 @@ use Lightit\Doctors\Domain\Models\Doctor;
 
 class UpdateDoctorAction
 {
-    public function execute(Doctor $doctor, UpdateDoctorDto $updateDoctorDto): Doctor
+    public function execute(Doctor $doctor, string $name): Doctor
     {
-        $doctor->name = $updateDoctorDto->name;
+        $doctor->name = $name;
 
         $doctor->saveOrFail();
 

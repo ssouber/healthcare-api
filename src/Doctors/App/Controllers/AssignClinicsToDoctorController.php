@@ -25,7 +25,7 @@ final readonly class AssignClinicsToDoctorController
         Doctor $doctor,
         AssignClinicsToDoctorAction $action,
     ): JsonResponse {
-        $doctor = $action->execute($doctor, $request->toDto());
+        $doctor = $action->execute($doctor, $request->getClinics());
 
         return DoctorResource::make($doctor)
             ->response()

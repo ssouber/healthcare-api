@@ -21,10 +21,8 @@ class AssignClinicsToDoctorRequest extends FormRequest
         ];
     }
 
-    public function toDto(): AssignClinicsToDoctorDto
+    public function getClinics(): array
     {
-        return new AssignClinicsToDoctorDto(
-            clinics: $this->array(self::CLINICS)
-        );
+        return $this->array(self::CLINICS);
     }
 }
