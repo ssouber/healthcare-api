@@ -7,7 +7,6 @@ namespace Lightit\Doctors\App\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Lightit\Clinics\Domain\Models\Clinic;
-use Lightit\Doctors\Domain\DataTransferObjects\AssignClinicsToDoctorDto;
 
 class AssignClinicsToDoctorRequest extends FormRequest
 {

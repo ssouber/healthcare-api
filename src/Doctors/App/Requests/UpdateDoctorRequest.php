@@ -6,7 +6,6 @@ namespace Lightit\Doctors\App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Lightit\Doctors\Domain\DataTransferObjects\UpdateDoctorDto;
 
 class UpdateDoctorRequest extends FormRequest
 {
