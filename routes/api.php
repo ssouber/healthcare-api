@@ -9,6 +9,7 @@ use Lightit\Doctors\App\Controllers\DeleteDoctorController;
 use Lightit\Doctors\App\Controllers\GetDoctorController;
 use Lightit\Doctors\App\Controllers\ListDoctorController;
 use Lightit\Doctors\App\Controllers\StoreDoctorController;
+use Lightit\Doctors\App\Controllers\UpdateDoctorController;
 use Lightit\Users\App\Controllers\DeleteUserController;
 use Lightit\Users\App\Controllers\GetUserController;
 use Lightit\Users\App\Controllers\ListUserController;
@@ -60,6 +61,7 @@ Route::prefix('doctors')
         Route::post('/', StoreDoctorController::class);
         Route::prefix('{doctor}')->group(static function (): void {
            Route::get('/', GetDoctorController::class);
+           Route::put('/', UpdateDoctorController::class);
            Route::delete('/', DeleteDoctorController::class);
            Route::post('/clinics', AssignClinicsToDoctorController::class);
         });
