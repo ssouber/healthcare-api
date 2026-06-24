@@ -19,8 +19,8 @@ class StoreDoctorRequest extends FormRequest
     {
         return [
             self::NAME => ['required', 'string', 'min:4', 'max:255'],
-            self::CLINICS => ['sometimes', 'array'],
-            self::CLINICS . '.*' => [Rule::numeric()->integer(), Rule::exists(Clinic::class, 'id')],
+            self::CLINICS => ['sometimes', 'array', Rule::exists(Clinic::class, 'id')],
+            self::CLINICS . '.*' => [Rule::numeric()->integer()],
         ];
     }
 

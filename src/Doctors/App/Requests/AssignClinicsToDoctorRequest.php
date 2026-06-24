@@ -15,8 +15,8 @@ class AssignClinicsToDoctorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            self::CLINICS => ['sometimes', 'array'],
-            self::CLINICS . '.*' => [Rule::numeric()->integer(), Rule::exists(Clinic::class, 'id')],
+            self::CLINICS => ['sometimes', 'array', Rule::exists(Clinic::class, 'id')],
+            self::CLINICS . '.*' => [Rule::numeric()->integer()],
         ];
     }
 
