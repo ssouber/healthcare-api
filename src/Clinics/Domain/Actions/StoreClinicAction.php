@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Lightit\Clinics\Domain\Actions;
 
 use Illuminate\Support\Facades\DB;
-use Lightit\Clinics\Domain\DataTransferObjects\ClinicDto;
+use Lightit\Clinics\Domain\DataTransferObjects\StoreClinicDto;
 use Lightit\Clinics\Domain\Models\Clinic;
 
 class StoreClinicAction
 {
-    public function execute(ClinicDto $clinicDto): Clinic
+    public function execute(StoreClinicDto $clinicDto): Clinic
     {
         return DB::transaction(function () use ($clinicDto) {
             $clinic = new Clinic();

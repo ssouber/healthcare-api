@@ -6,7 +6,7 @@ namespace Lightit\Clinics\App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Lightit\Clinics\Domain\DataTransferObjects\ClinicDto;
+use Lightit\Clinics\Domain\DataTransferObjects\StoreClinicDto;
 use Lightit\Doctors\Domain\Models\Doctor;
 
 class StoreClinicRequest extends FormRequest
@@ -27,9 +27,9 @@ class StoreClinicRequest extends FormRequest
         ];
     }
 
-    public function toDto(): ClinicDto
+    public function toDto(): StoreClinicDto
     {
-        return new ClinicDto(
+        return new StoreClinicDto(
             name: $this->string(self::NAME)->toString(),
             address: $this->string(self::ADDRESS)->toString(),
             doctors: $this->array(self::DOCTORS),
