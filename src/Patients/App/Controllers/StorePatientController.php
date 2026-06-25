@@ -9,7 +9,7 @@ use Dedoc\Scramble\Attributes\Group;
 use Illuminate\Http\JsonResponse;
 use Lightit\Patients\App\Requests\StorePatientRequest;
 use Lightit\Patients\App\Resources\PatientResource;
-use Lightit\Patients\Domain\Actions\StorePatientAction;
+use Lightit\Patients\Domain\Actions\UpsertPatientAction;
 
 #[Group('Patients')]
 final readonly class StorePatientController
@@ -19,9 +19,9 @@ final readonly class StorePatientController
         title: 'Create a patient',
         description: 'Creates a new patient.'
     )]
-    public function __invoke(StorePatientRequest $request, StorePatientAction $storePatientAction): JsonResponse
+    public function __invoke(StorePatientRequest $request, UpsertPatientAction $upsertPatientAction): JsonResponse
     {
-        $patient = $storePatientAction->execute($request->toDto());
+        $patient = $upsertPatientAction->execute($request->toDto());
 
         return PatientResource::make($patient)
             ->response()

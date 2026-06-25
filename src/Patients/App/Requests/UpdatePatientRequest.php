@@ -6,7 +6,7 @@ namespace Lightit\Patients\App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Lightit\Patients\Domain\DataTransferObjects\UpdatePatientDto;
+use Lightit\Patients\Domain\DataTransferObjects\PatientDto;
 use Lightit\Patients\Domain\Models\Patient;
 
 class UpdatePatientRequest extends FormRequest
@@ -23,9 +23,9 @@ class UpdatePatientRequest extends FormRequest
         ];
     }
 
-    public function toDto(): UpdatePatientDto
+    public function toDto(): PatientDto
     {
-        return new UpdatePatientDto(
+        return new PatientDto(
             name: $this->string(self::NAME)->toString(),
             email: $this->string(self::EMAIL)->toString(),
         );

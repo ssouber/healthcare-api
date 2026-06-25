@@ -7,7 +7,7 @@ namespace Lightit\Patients\App\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
-use Lightit\Patients\Domain\DataTransferObjects\StorePatientDto;
+use Lightit\Patients\Domain\DataTransferObjects\PatientDto;
 use Lightit\Patients\Domain\Models\Patient;
 
 class StorePatientRequest extends FormRequest
@@ -27,9 +27,9 @@ class StorePatientRequest extends FormRequest
         ];
     }
 
-    public function toDto(): StorePatientDto
+    public function toDto(): PatientDto
     {
-        return new StorePatientDto(
+        return new PatientDto(
             name: $this->string(self::NAME)->toString(),
             email: $this->string(self::EMAIL)->toString(),
             password: $this->string(self::PASSWORD)->toString(),
