@@ -31,7 +31,7 @@ class PatientFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'password' => static::$password ??= Hash::make('$2y$12$pauzgXFoM2HMKfsAoxQ8UuDwpsmPq1tOcTNkXYLeufSX4aGBC2V2W'),
+            'password' => static::$password ??= Hash::make('Healthcare2027!'),
         ];
     }
 }
