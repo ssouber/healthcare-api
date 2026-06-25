@@ -15,8 +15,10 @@ class UpsertPatientAction
         $patient->name = $patientDto->name;
         $patient->email = $patientDto->email;
 
-        if (! $patient->exists && $patientDto->password !== null) {
-            $patient->password = $patientDto->password;
+        if (! $patient->exists) {
+            /** @var string $password */
+            $password = $patientDto->password;
+            $patient->password = $password;
         }
 
         $patient->saveOrFail();
