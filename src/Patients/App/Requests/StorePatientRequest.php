@@ -22,7 +22,7 @@ class StorePatientRequest extends FormRequest
     {
         return [
             self::NAME     => ['required', 'string', 'min:4', 'max:255'],
-            self::EMAIL    => ['required', 'email', Rule::unique(Patient::class, 'email')],
+            self::EMAIL    => ['required', Rule::email(), Rule::unique(Patient::class, 'email')],
             self::PASSWORD => ['required', Password::default()],
         ];
     }
