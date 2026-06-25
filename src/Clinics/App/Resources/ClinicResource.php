@@ -8,7 +8,6 @@ use Dedoc\Scramble\Attributes\SchemaName;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Lightit\Clinics\Domain\Models\Clinic;
-use Lightit\Doctors\App\Resources\DoctorResource;
 
 /**
  * @mixin Clinic
@@ -21,7 +20,7 @@ class ClinicResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'doctors' => DoctorResource::collection($this->whenLoaded('doctors')),
+            'doctors_count' => $this->doctors_count,
         ];
     }
 }
