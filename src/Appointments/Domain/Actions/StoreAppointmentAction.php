@@ -6,6 +6,7 @@ namespace Lightit\Appointments\Domain\Actions;
 
 use Carbon\CarbonImmutable;
 use Lightit\Appointments\Domain\DataTransferObjects\AppointmentDto;
+use Lightit\Appointments\Domain\Enums\AppointmentStatus;
 use Lightit\Appointments\Domain\Exceptions\DoctorNotAvailableException;
 use Lightit\Appointments\Domain\Exceptions\PatientNotAvailableException;
 use Lightit\Appointments\Domain\Models\Appointment;
@@ -35,6 +36,7 @@ class StoreAppointmentAction
         $appointment->clinic_id = $dto->clinicId;
         $appointment->starts_at = $startsAt;
         $appointment->ends_at = $startsAt->addHour();
+        $appointment->status = AppointmentStatus::SCHEDULED;
 
         $appointment->saveOrFail();
 
