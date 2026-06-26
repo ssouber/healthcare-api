@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Support\Facades\Route;
+use Lightit\Appointments\App\Controllers\ListAppointmentController;
 use Lightit\Patients\App\Controllers\DeletePatientController;
 use Lightit\Patients\App\Controllers\GetPatientController;
 use Lightit\Patients\App\Controllers\ListPatientController;
@@ -109,4 +110,14 @@ Route::prefix('doctors')
            Route::delete('/', DeleteDoctorController::class);
            Route::post('/clinics', AssignClinicsToDoctorController::class);
         })->whereNumber('doctor');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Appointments Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('appointments')
+    ->group(static function (): void {
+        Route::get('/', ListAppointmentController::class);
     });
