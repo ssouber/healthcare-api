@@ -32,6 +32,7 @@ class StoreAppointmentAction
         $appointment = new Appointment();
         $appointment->doctor_id = $dto->doctorId;
         $appointment->patient_id = $dto->patientId;
+        $appointment->clinic_id = $dto->clinicId;
         $appointment->starts_at = $startsAt;
         $appointment->ends_at = $startsAt->addHour();
 
