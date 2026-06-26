@@ -30,7 +30,7 @@ class StoreAppointmentRequest extends FormRequest
                 'integer',
                 Rule::exists(Clinic::class, 'id'),
                 Rule::exists('clinic_doctor', 'clinic_id')
-                    ->where('doctor_id', $this->input(self::DOCTOR))],
+                    ->where('doctor_id', $this->integer(self::DOCTOR))],
             self::PATIENT => ['required', Rule::numeric(), Rule::exists(Patient::class, 'id')],
             self::STARTS_AT => ['required', Rule::date()->format('Y-m-d H:i')->after('now')],
         ];
@@ -39,10 +39,10 @@ class StoreAppointmentRequest extends FormRequest
     public function toDto(): AppointmentDto
     {
         return new AppointmentDto(
-            patientId: $this->input(self::PATIENT),
-            doctorId: $this->input(self::DOCTOR),
-            clinicId: $this->input(self::CLINIC),
-            startsAt: $this->input(self::STARTS_AT),
+            patientId: $this->integer(self::PATIENT),
+            doctorId: $this->integer(self::DOCTOR),
+            clinicId: $this->integer(self::CLINIC),
+            startsAt: $this->string(self::STARTS_AT)->toString(),
         );
     }
 }
