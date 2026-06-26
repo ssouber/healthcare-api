@@ -10,7 +10,6 @@ use Lightit\Appointments\Domain\Enums\AppointmentStatus;
 use Lightit\Appointments\Domain\Models\Appointment;
 use Lightit\Clinics\Domain\Models\Clinic;
 use Lightit\Doctors\Domain\Models\Doctor;
-use function Illuminate\Support\hours;
 
 /**
  * @extends Factory<Appointment>
