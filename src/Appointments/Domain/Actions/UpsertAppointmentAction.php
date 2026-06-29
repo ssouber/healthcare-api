@@ -51,7 +51,7 @@ class UpsertAppointmentAction
             ->where('ends_at', '>', $startsAt);
 
         if ($excludeId !== null) {
-            $query->where('id', '!=', $excludeId);
+            $query->whereKeyNot($excludeId);
         }
 
         return $query->exists();
