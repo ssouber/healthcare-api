@@ -19,13 +19,11 @@ class StoreAppointmentAction
      */
     public function execute(AppointmentDto $dto): Appointment
     {
-        $startsAt = CarbonImmutable::parse($dto->startsAt);
-
-        if ($this->hasOverlap('doctor_id', $dto->doctorId, $startsAt)) {
+        if ($this->hasOverlap('doctor_id', $dto->doctorId, $dto->startsAt)) {
             throw new DoctorNotAvailableException();
         }
 
-        if ($this->hasOverlap('patient_id', $dto->patientId, $startsAt)) {
+        if ($this->hasOverlap('patient_id', $dto->patientId, $dto->startsAt)) {
             throw new PatientNotAvailableException();
         }
 
@@ -33,8 +31,8 @@ class StoreAppointmentAction
         $appointment->doctor_id = $dto->doctorId;
         $appointment->patient_id = $dto->patientId;
         $appointment->clinic_id = $dto->clinicId;
-        $appointment->starts_at = $startsAt;
-        $appointment->ends_at = $startsAt->addHour();
+        $appointment->starts_at = $dto->startsAt;
+        $appointment->ends_at = $dto->startsAt->addHour();
         $appointment->status = AppointmentStatus::SCHEDULED;
 
         $appointment->saveOrFail();
