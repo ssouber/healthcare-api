@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Lightit\Appointments\Domain\Exceptions;
 
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Lightit\Shared\App\Exceptions\Http\HttpException;
 
-class DoctorNotAvailableException extends Exception
+class DoctorNotAvailableException extends HttpException
 {
-    public function render(Request $request): Response
-    {
-        return response(['message' => 'Doctor not available.'], 409);
-    }
+    #[\Override]
+    protected int $status = 409;
+
+    #[\Override]
+    protected string $errorCode = 'doctor_not_available';
+
+    #[\Override]
+    protected $message = 'Doctor not available.';
 }
