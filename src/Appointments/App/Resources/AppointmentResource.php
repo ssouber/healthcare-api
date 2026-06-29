@@ -8,6 +8,9 @@ use Dedoc\Scramble\Attributes\SchemaName;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Lightit\Appointments\Domain\Models\Appointment;
+use Lightit\Clinics\App\Resources\ClinicResource;
+use Lightit\Doctors\App\Resources\DoctorResource;
+use Lightit\Patients\App\Resources\PatientResource;
 
 /**
  * @mixin Appointment
@@ -19,9 +22,9 @@ class AppointmentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'doctor_name' => $this->whenLoaded('doctor', fn () => $this->doctor->name),
-            'patient_name' => $this->whenLoaded('patient', fn () => $this->patient->name),
-            'clinic_name' => $this->whenLoaded('clinic', fn () => $this->clinic->name),
+            'doctor' => new DoctorResource($this->whenLoaded('doctor')),
+            'patient' => new PatientResource($this->whenLoaded('patient')),
+            'clinic' => new ClinicResource($this->whenLoaded('clinic')),
             'starts_at' => $this->starts_at,
             'ends_at' => $this->ends_at,
         ];
