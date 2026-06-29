@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use Database\Factories\AppointmentFactory;
 use Database\Factories\ClinicFactory;
 use Database\Factories\DoctorFactory;
 use Database\Factories\PatientFactory;
@@ -25,6 +24,5 @@ class DatabaseSeeder extends Seeder
         DoctorFactory::new()->createMany(35);
         ClinicFactory::new()->createMany(10);
         PatientFactory::new()->createMany(15);
-        AppointmentFactory::new()->createMany(6);
     }
 }
