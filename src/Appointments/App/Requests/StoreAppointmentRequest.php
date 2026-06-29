@@ -26,10 +26,10 @@ class StoreAppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            self::DOCTOR => ['required', 'integer', Rule::exists(Doctor::class, 'id')],
+            self::DOCTOR => ['required', Rule::numeric()->integer(), Rule::exists(Doctor::class, 'id')],
             self::CLINIC => [
                 'required',
-                'integer',
+                Rule::numeric()->integer(),
                 Rule::exists(Clinic::class, 'id'),
                 Rule::exists('clinic_doctor', 'clinic_id')
                     ->where('doctor_id', $this->integer(self::DOCTOR))],
