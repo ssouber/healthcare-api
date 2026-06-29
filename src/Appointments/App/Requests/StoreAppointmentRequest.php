@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Lightit\Appointments\App\Requests;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Lightit\Appointments\Domain\DataTransferObjects\AppointmentDto;
@@ -42,7 +43,7 @@ class StoreAppointmentRequest extends FormRequest
             patientId: $this->integer(self::PATIENT),
             doctorId: $this->integer(self::DOCTOR),
             clinicId: $this->integer(self::CLINIC),
-            startsAt: $this->string(self::STARTS_AT)->toString(),
+            startsAt: CarbonImmutable::parse($this->string(self::STARTS_AT)->toString()),
         );
     }
 }

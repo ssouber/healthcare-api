@@ -10,6 +10,7 @@ use Lightit\Appointments\Domain\Enums\AppointmentStatus;
 use Lightit\Appointments\Domain\Exceptions\DoctorNotAvailableException;
 use Lightit\Appointments\Domain\Exceptions\PatientNotAvailableException;
 use Lightit\Appointments\Domain\Models\Appointment;
+
 class StoreAppointmentAction
 {
     /**
