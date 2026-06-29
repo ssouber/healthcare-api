@@ -13,7 +13,7 @@ use Lightit\Doctors\Domain\Models\Doctor;
 use Lightit\Patients\Domain\Models\Patient;
 use Lightit\Shared\Domain\Enums\DateFormat;
 
-class StoreAppointmentRequest extends FormRequest
+class UpsertAppointmentRequest extends FormRequest
 {
     public const DOCTOR = 'doctor';
 

@@ -11,23 +11,26 @@ use Lightit\Appointments\Domain\Exceptions\DoctorNotAvailableException;
 use Lightit\Appointments\Domain\Exceptions\PatientNotAvailableException;
 use Lightit\Appointments\Domain\Models\Appointment;
 
-class StoreAppointmentAction
+class UpsertAppointmentAction
 {
     /**
      * @throws DoctorNotAvailableException
      * @throws PatientNotAvailableException
      */
-    public function execute(AppointmentDto $dto): Appointment
-    {
-        if ($this->hasOverlap('doctor_id', $dto->doctorId, $dto->startsAt)) {
+    public function execute(
+        AppointmentDto $dto,
+        Appointment|null $appointment = null,
+    ): Appointment {
+        $appointment ??= new Appointment();
+
+        if ($this->hasOverlap('doctor_id', $dto->doctorId, $dto->startsAt, $appointment->id)) {
             throw new DoctorNotAvailableException();
         }
 
-        if ($this->hasOverlap('patient_id', $dto->patientId, $dto->startsAt)) {
+        if ($this->hasOverlap('patient_id', $dto->patientId, $dto->startsAt, $appointment->id)) {
             throw new PatientNotAvailableException();
         }
 
-        $appointment = new Appointment();
         $appointment->doctor_id = $dto->doctorId;
         $appointment->patient_id = $dto->patientId;
         $appointment->clinic_id = $dto->clinicId;
@@ -40,12 +43,17 @@ class StoreAppointmentAction
         return $appointment->load('doctor', 'patient', 'clinic');
     }
 
-    private function hasOverlap(string $column, int $id, CarbonImmutable $startsAt): bool
+    private function hasOverlap(string $column, int $id, CarbonImmutable $startsAt, int|null $excludeId = null): bool
     {
-        return Appointment::query()
+        $query = Appointment::query()
             ->where($column, $id)
             ->where('starts_at', '<', $startsAt->addHour())
-            ->where('ends_at', '>', $startsAt)
-            ->exists();
+            ->where('ends_at', '>', $startsAt);
+
+        if ($excludeId !== null) {
+            $query->where('id', '!=', $excludeId);
+        }
+
+        return $query->exists();
     }
 }

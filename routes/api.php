@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Lightit\Appointments\App\Controllers\DeleteAppointmentController;
 use Lightit\Appointments\App\Controllers\ListAppointmentController;
 use Lightit\Appointments\App\Controllers\StoreAppointmentController;
+use Lightit\Appointments\App\Controllers\UpdateAppointmentController;
 use Lightit\Patients\App\Controllers\DeletePatientController;
 use Lightit\Patients\App\Controllers\GetPatientController;
 use Lightit\Patients\App\Controllers\ListPatientController;
@@ -125,5 +126,6 @@ Route::prefix('appointments')
         Route::post('/', StoreAppointmentController::class);
         Route::prefix('{appointment}')->group(static function (): void {
             Route::delete('/', DeleteAppointmentController::class);
+            Route::put('/', UpdateAppointmentController::class);
         })->whereNumber('appointment');
     });
