@@ -10,8 +10,6 @@ use Lightit\Appointments\Domain\Enums\AppointmentStatus;
 use Lightit\Appointments\Domain\Exceptions\DoctorNotAvailableException;
 use Lightit\Appointments\Domain\Exceptions\PatientNotAvailableException;
 use Lightit\Appointments\Domain\Models\Appointment;
-use Spatie\QueryBuilder\QueryBuilder;
-
 class StoreAppointmentAction
 {
     /**
@@ -45,7 +43,7 @@ class StoreAppointmentAction
 
     private function hasOverlap(string $column, int $id, CarbonImmutable $startsAt): bool
     {
-        return QueryBuilder::for(Appointment::class)
+        return Appointment::query()
             ->where($column, $id)
             ->where('starts_at', '<', $startsAt->addHour())
             ->where('ends_at', '>', $startsAt)

@@ -58,7 +58,7 @@ class Appointment extends Model
         return [
             'starts_at' => 'immutable_datetime',
             'ends_at'   => 'immutable_datetime',
-            'status'    => AppointmentStatus::class
+            'status'    => AppointmentStatus::class,
         ];
     }
 
