@@ -11,6 +11,7 @@ use Lightit\Appointments\Domain\DataTransferObjects\AppointmentDto;
 use Lightit\Clinics\Domain\Models\Clinic;
 use Lightit\Doctors\Domain\Models\Doctor;
 use Lightit\Patients\Domain\Models\Patient;
+use Lightit\Shared\Domain\Enums\DateFormat;
 
 class StoreAppointmentRequest extends FormRequest
 {
@@ -33,7 +34,7 @@ class StoreAppointmentRequest extends FormRequest
                 Rule::exists('clinic_doctor', 'clinic_id')
                     ->where('doctor_id', $this->integer(self::DOCTOR))],
             self::PATIENT => ['required', Rule::numeric(), Rule::exists(Patient::class, 'id')],
-            self::STARTS_AT => ['required', Rule::date()->format('Y-m-d H:i')->after('now')],
+            self::STARTS_AT => ['required', Rule::date()->format(DateFormat::DATETIME->value)->after('now')],
         ];
     }
 
