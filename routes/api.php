@@ -120,12 +120,14 @@ Route::prefix('doctors')
 | Appointments Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('appointments')
-    ->group(static function (): void {
-        Route::get('/', ListAppointmentController::class);
-        Route::post('/', StoreAppointmentController::class);
-        Route::prefix('{appointment}')->group(static function (): void {
-            Route::delete('/', DeleteAppointmentController::class);
-            Route::put('/', UpdateAppointmentController::class);
-        })->whereNumber('appointment');
-    });
+Route::middleware(['auth'])->group(static function (): void {
+    Route::prefix('appointments')
+        ->group(static function (): void {
+            Route::get('/', ListAppointmentController::class);
+            Route::post('/', StoreAppointmentController::class);
+            Route::prefix('{appointment}')->group(static function (): void {
+                Route::delete('/', DeleteAppointmentController::class);
+                Route::put('/', UpdateAppointmentController::class);
+            })->whereNumber('appointment');
+        });
+});
