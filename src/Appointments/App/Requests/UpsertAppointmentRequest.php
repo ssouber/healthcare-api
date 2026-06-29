@@ -15,7 +15,7 @@ use Lightit\Shared\Domain\Enums\DateFormat;
 
 class UpsertAppointmentRequest extends FormRequest
 {
-    public const DOCTOR = 'doctor';
+    public const string DOCTOR = 'doctor';
 
     public const string CLINIC = 'clinic';
 

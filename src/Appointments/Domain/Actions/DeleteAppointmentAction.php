@@ -12,16 +12,11 @@ class DeleteAppointmentAction
 {
     public function execute(Appointment $appointment): void
     {
-        if ($this->canBeDeleted($appointment->starts_at)) {
+        if ($appointment->starts_at->isAfter(CarbonImmutable::now()->addHours(48))) {
             $appointment->deleteOrFail();
         } else {
             $appointment->status = AppointmentStatus::CANCELLED;
             $appointment->saveOrFail();
         }
-    }
-
-    private function canBeDeleted(CarbonImmutable $startsAt): bool
-    {
-        return $startsAt->isAfter(CarbonImmutable::now()->addHours(48));
     }
 }
