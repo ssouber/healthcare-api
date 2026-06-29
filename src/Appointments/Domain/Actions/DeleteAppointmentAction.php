@@ -22,6 +22,6 @@ class DeleteAppointmentAction
 
     private function canBeDeleted(CarbonImmutable $startsAt): bool
     {
-        return $startsAt->isBefore(CarbonImmutable::now()->addHours(48));
+        return $startsAt->isAfter(CarbonImmutable::now()->addHours(48));
     }
 }
