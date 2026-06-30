@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lightit\Authentication\App\Controllers;
 
 use Dedoc\Scramble\Attributes\Endpoint;

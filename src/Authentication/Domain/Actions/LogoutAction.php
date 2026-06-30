@@ -1,18 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lightit\Authentication\Domain\Actions;
 
 use Illuminate\Contracts\Auth\Factory as AuthFactory;
-use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 final class LogoutAction
 {
     public function __construct(
-        private AuthFactory $factory,
+        private readonly AuthFactory $factory,
     ) {
     }
 
-    public function execute()
+    public function execute(): void
     {
         $guard = $this->factory->guard('api');
         $guard->logout();
