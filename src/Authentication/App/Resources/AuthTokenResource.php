@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Lightit\Authentication\Domain\DataTransferObjects\LoginResponseDto;
 
 /**
- * @property LoginResponseDto $resource
+ * @mixin LoginResponseDto
  */
 class AuthTokenResource extends JsonResource
 {
@@ -18,13 +18,10 @@ class AuthTokenResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        /** @var LoginResponseDto $dto */
-        $dto = $this->resource;
-
         return [
-            'access_token' => $dto->accessToken,
-            'token_type' => $dto->tokenType,
-            'expires_in' => $dto->expiresIn,
+            'access_token' => $this->accessToken,
+            'token_type' => $this->tokenType,
+            'expires_in' => $this->expiresIn,
         ];
     }
 }
