@@ -31,7 +31,7 @@ class LoginAction
         $token = $guard->attempt($credentials);
 
         if (! $token) {
-            throw new UnauthorizedException('Invalid credentials');
+            throw new UnauthorizedException();
         }
 
         /** @var string $token */

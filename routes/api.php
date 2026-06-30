@@ -9,6 +9,7 @@ use Lightit\Appointments\App\Controllers\ListAppointmentController;
 use Lightit\Appointments\App\Controllers\StoreAppointmentController;
 use Lightit\Appointments\App\Controllers\UpdateAppointmentController;
 use Lightit\Authentication\App\Controllers\LoginController;
+use Lightit\Authentication\App\Controllers\LogoutController;
 use Lightit\Patients\App\Controllers\DeletePatientController;
 use Lightit\Patients\App\Controllers\GetPatientController;
 use Lightit\Patients\App\Controllers\ListPatientController;
@@ -122,6 +123,7 @@ Route::prefix('doctors')
 |--------------------------------------------------------------------------
 */
 Route::post('/login', LoginController::class);
+Route::middleware(['auth'])->post('/logout', LogoutController::class);
 
 /*
 |--------------------------------------------------------------------------
