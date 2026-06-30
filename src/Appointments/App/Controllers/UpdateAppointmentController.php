@@ -29,7 +29,7 @@ final readonly class UpdateAppointmentController
         #[CurrentUser]
         Patient $patient,
     ): JsonResponse {
-        $appointment = $storeAppointmentAction->execute($request->toDto($patient->id), $appointment);
+        $appointment = $storeAppointmentAction->execute($request->toDto(), $patient, $appointment);
 
         return AppointmentResource::make($appointment)
             ->response();

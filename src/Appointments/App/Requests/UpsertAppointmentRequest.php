@@ -35,10 +35,9 @@ class UpsertAppointmentRequest extends FormRequest
         ];
     }
 
-    public function toDto(int $patientId): AppointmentDto
+    public function toDto(): AppointmentDto
     {
         return new AppointmentDto(
-            patientId: $patientId,
             doctorId: $this->integer(self::DOCTOR),
             clinicId: $this->integer(self::CLINIC),
             startsAt: CarbonImmutable::parse($this->string(self::STARTS_AT)->toString()),
