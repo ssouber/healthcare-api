@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Lightit\Authentication\App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Email;
+use Illuminate\Validation\Rules\Password;
+use Lightit\Authentication\Domain\DataTransferObjects\LoginRequestDto;
 
 class LoginRequest extends FormRequest
 {
@@ -19,24 +21,16 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            self::EMAIL => ['required', Rule::email()->strict()],
-            self::PASSWORD => ['required'],
+            self::EMAIL => ['required', Email::default()],
+            self::PASSWORD => ['required', Password::default()],
         ];
     }
 
-    /**
-     * @return array{email: string, password: string}
-     */
-    public function credentials(): array
+    public function toDto(): LoginRequestDto
     {
-        return [
-            'email' => $this->string(self::EMAIL)->toString(),
-            'password' => $this->string(self::PASSWORD)->toString(),
-        ];
-    }
-
-    public function authorize(): bool
-    {
-        return true;
+        return new LoginRequestDto(
+            email: $this->string(self::EMAIL)->toString(),
+            password: $this->string(self::PASSWORD)->toString()
+        );
     }
 }

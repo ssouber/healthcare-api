@@ -19,7 +19,7 @@ final class LoginController
     )]
     public function __invoke(LoginRequest $request, LoginAction $loginAction): JsonResponse
     {
-        $tokenData = $loginAction->execute($request->credentials());
+        $tokenData = $loginAction->execute($request->toDto());
 
         return AuthTokenResource::make($tokenData)->response();
     }

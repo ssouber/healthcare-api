@@ -27,7 +27,7 @@ final readonly class StoreAppointmentController
         #[CurrentUser]
         Patient $patient,
     ): JsonResponse {
-        $appointment = $storeAppointmentAction->execute($request->toDto(), $patient, null);
+        $appointment = $storeAppointmentAction->execute($request->toDto(), $patient);
 
         return AppointmentResource::make($appointment)
             ->response()
