@@ -22,7 +22,8 @@ final readonly class ListAppointmentController
     )]
     public function __invoke(
         ListAppointmentAction $action,
-        #[CurrentUser] Patient $patient,
+        #[CurrentUser]
+        Patient $patient,
     ): JsonResponse {
         $appointments = $action->execute($patient);
 

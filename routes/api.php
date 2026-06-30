@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Container\Attributes\CurrentUser;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Route;
 use Lightit\Appointments\App\Controllers\DeleteAppointmentController;
 use Lightit\Appointments\App\Controllers\ListAppointmentController;

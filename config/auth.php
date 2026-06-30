@@ -69,7 +69,7 @@ return [
         'patients' => [
             'driver' => 'eloquent',
             'model' => \Lightit\Patients\Domain\Models\Patient::class,
-        ]
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
