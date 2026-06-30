@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lightit\Authentication\App\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;

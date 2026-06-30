@@ -1,19 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lightit\Authentication\Domain\Actions;
 
+use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Lightit\Authentication\Domain\DataTransferObjects\LoginResponseDto;
 use Lightit\Authentication\Domain\Exceptions\UnauthorizedException;
 use PHPOpenSourceSaver\JWTAuth\Factory as JWTAuth;
-use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
-
 
 class LoginAction
 {
     public function __construct(
-        private AuthFactory $factory,
-        private JWTAuth $jwtAuth,
+        private readonly AuthFactory $factory,
+        private readonly JWTAuth $jwtAuth,
     ) {
     }
 

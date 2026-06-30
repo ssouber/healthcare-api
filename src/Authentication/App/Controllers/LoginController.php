@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lightit\Authentication\App\Controllers;
 
 use Dedoc\Scramble\Attributes\Endpoint;
@@ -18,6 +20,7 @@ final class LoginController
     public function __invoke(LoginRequest $request, LoginAction $loginAction): JsonResponse
     {
         $tokenData = $loginAction->execute($request->credentials());
+
         return AuthTokenResource::make($tokenData)->response();
     }
 }
