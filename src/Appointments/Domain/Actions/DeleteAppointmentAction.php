@@ -16,7 +16,8 @@ class DeleteAppointmentAction
     {
         if ($appointment->patient_id !== $patient->id) {
             throw new ForbiddenException('You are not authorized to delete this appointment.');
-        } elseif ($appointment->starts_at->isAfter(CarbonImmutable::now()->addHours(48))) {
+        }
+        if ($appointment->starts_at->isAfter(CarbonImmutable::now()->addHours(48))) {
             $appointment->deleteOrFail();
         } else {
             $appointment->status = AppointmentStatus::CANCELLED;
