@@ -3,11 +3,13 @@
 declare(strict_types=1);
 
 use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Route;
 use Lightit\Appointments\App\Controllers\DeleteAppointmentController;
 use Lightit\Appointments\App\Controllers\ListAppointmentController;
 use Lightit\Appointments\App\Controllers\StoreAppointmentController;
 use Lightit\Appointments\App\Controllers\UpdateAppointmentController;
+use Lightit\Authentication\App\Controllers\LoginController;
 use Lightit\Patients\App\Controllers\DeletePatientController;
 use Lightit\Patients\App\Controllers\GetPatientController;
 use Lightit\Patients\App\Controllers\ListPatientController;
@@ -114,6 +116,13 @@ Route::prefix('doctors')
            Route::post('/clinics', AssignClinicsToDoctorController::class);
         })->whereNumber('doctor');
     });
+
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
+Route::post('/login', LoginController::class);
 
 /*
 |--------------------------------------------------------------------------
