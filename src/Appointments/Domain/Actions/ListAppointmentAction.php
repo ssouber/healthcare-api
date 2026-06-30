@@ -20,7 +20,7 @@ class ListAppointmentAction
             ->allowedFilters(['id'])
             ->allowedSorts('id')
             ->with('clinic', 'doctor', 'patient')
-            ->where('patient_id', $patient->id)
+            ->whereBelongsTo($patient)
             ->latest('starts_at')
             ->paginate();
     }
