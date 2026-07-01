@@ -24,7 +24,6 @@ class UpsertAppointmentAction
         Patient $patient,
         Appointment|null $appointment = null,
     ): Appointment {
-        $isNewAppointment = $appointment == null;
         $appointment ??= new Appointment();
 
         if ($this->hasOverlap('doctor_id', $dto->doctorId, $dto->startsAt, $appointment->id)) {
@@ -44,7 +43,7 @@ class UpsertAppointmentAction
 
         $appointment->saveOrFail();
 
-        if ($isNewAppointment) {
+        if ($appointment->wasRecentlyCreated) {
             $patient->notify(new AppointmentCreatedNotification($appointment));
         }
 
