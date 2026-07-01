@@ -7,6 +7,7 @@ namespace Lightit\Patients\Domain\Models;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Lightit\Appointments\Domain\Models\Appointment;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
@@ -40,6 +41,7 @@ use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 class Patient extends Authenticatable implements JWTSubject
 {
     use SoftDeletes;
+    use Notifiable;
 
     #[\Override]
     protected $guarded = ['id'];
