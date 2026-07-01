@@ -17,4 +17,7 @@ class UnauthenticatedException extends HttpException
      */
     #[\Override]
     protected string $errorCode = 'unauthenticated';
+
+    #[\Override]
+    protected $message = 'Unauthenticated.';
 }

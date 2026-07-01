@@ -8,6 +8,9 @@ use Lightit\Appointments\App\Controllers\DeleteAppointmentController;
 use Lightit\Appointments\App\Controllers\ListAppointmentController;
 use Lightit\Appointments\App\Controllers\StoreAppointmentController;
 use Lightit\Appointments\App\Controllers\UpdateAppointmentController;
+use Lightit\Authentication\App\Controllers\LoginController;
+use Lightit\Authentication\App\Controllers\LogoutController;
+use Lightit\Authentication\App\Controllers\RefreshController;
 use Lightit\Patients\App\Controllers\DeletePatientController;
 use Lightit\Patients\App\Controllers\GetPatientController;
 use Lightit\Patients\App\Controllers\ListPatientController;
@@ -117,15 +120,28 @@ Route::prefix('doctors')
 
 /*
 |--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
+Route::post('/login', LoginController::class);
+Route::middleware(['auth'])->group(static function (): void {
+    Route::post('/logout', LogoutController::class);
+    Route::post('/refresh', RefreshController::class);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Appointments Routes
 |--------------------------------------------------------------------------
 */
-Route::prefix('appointments')
-    ->group(static function (): void {
-        Route::get('/', ListAppointmentController::class);
-        Route::post('/', StoreAppointmentController::class);
-        Route::prefix('{appointment}')->group(static function (): void {
-            Route::delete('/', DeleteAppointmentController::class);
-            Route::put('/', UpdateAppointmentController::class);
-        })->whereNumber('appointment');
-    });
+Route::middleware(['auth'])->group(static function (): void {
+    Route::prefix('appointments')
+        ->group(static function (): void {
+            Route::get('/', ListAppointmentController::class);
+            Route::post('/', StoreAppointmentController::class);
+            Route::prefix('{appointment}')->group(static function (): void {
+                Route::delete('/', DeleteAppointmentController::class);
+                Route::put('/', UpdateAppointmentController::class);
+            })->whereNumber('appointment');
+        });
+});

@@ -10,7 +10,6 @@ use Illuminate\Validation\Rule;
 use Lightit\Appointments\Domain\DataTransferObjects\AppointmentDto;
 use Lightit\Clinics\Domain\Models\Clinic;
 use Lightit\Doctors\Domain\Models\Doctor;
-use Lightit\Patients\Domain\Models\Patient;
 use Lightit\Shared\Domain\Enums\DateFormat;
 
 class UpsertAppointmentRequest extends FormRequest
@@ -19,21 +18,19 @@ class UpsertAppointmentRequest extends FormRequest
 
     public const string CLINIC = 'clinic';
 
-    public const string PATIENT = 'patient';
-
     public const string STARTS_AT = 'starts_at';
 
     public function rules(): array
     {
         return [
-            self::DOCTOR => ['required', Rule::numeric()->integer(), Rule::exists(Doctor::class, 'id')],
-            self::CLINIC => [
+            self::DOCTOR   => ['required', Rule::numeric()->integer(), Rule::exists(Doctor::class, 'id')],
+            self::CLINIC   => [
                 'required',
                 Rule::numeric()->integer(),
                 Rule::exists(Clinic::class, 'id'),
                 Rule::exists('clinic_doctor', 'clinic_id')
-                    ->where('doctor_id', $this->integer(self::DOCTOR))],
-            self::PATIENT => ['required', Rule::numeric(), Rule::exists(Patient::class, 'id')],
+                    ->where('doctor_id', $this->integer(self::DOCTOR)),
+            ],
             self::STARTS_AT => ['required', Rule::date()->format(DateFormat::DATETIME->value)->after('now')],
         ];
     }
@@ -41,7 +38,6 @@ class UpsertAppointmentRequest extends FormRequest
     public function toDto(): AppointmentDto
     {
         return new AppointmentDto(
-            patientId: $this->integer(self::PATIENT),
             doctorId: $this->integer(self::DOCTOR),
             clinicId: $this->integer(self::CLINIC),
             startsAt: CarbonImmutable::parse($this->string(self::STARTS_AT)->toString()),

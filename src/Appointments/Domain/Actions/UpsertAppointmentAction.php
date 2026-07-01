@@ -10,6 +10,7 @@ use Lightit\Appointments\Domain\Enums\AppointmentStatus;
 use Lightit\Appointments\Domain\Exceptions\DoctorNotAvailableException;
 use Lightit\Appointments\Domain\Exceptions\PatientNotAvailableException;
 use Lightit\Appointments\Domain\Models\Appointment;
+use Lightit\Patients\Domain\Models\Patient;
 
 class UpsertAppointmentAction
 {
@@ -19,6 +20,7 @@ class UpsertAppointmentAction
      */
     public function execute(
         AppointmentDto $dto,
+        Patient $patient,
         Appointment|null $appointment = null,
     ): Appointment {
         $appointment ??= new Appointment();
@@ -27,12 +29,12 @@ class UpsertAppointmentAction
             throw new DoctorNotAvailableException();
         }
 
-        if ($this->hasOverlap('patient_id', $dto->patientId, $dto->startsAt, $appointment->id)) {
+        if ($this->hasOverlap('patient_id', $patient->id, $dto->startsAt, $appointment->id)) {
             throw new PatientNotAvailableException();
         }
 
         $appointment->doctor_id = $dto->doctorId;
-        $appointment->patient_id = $dto->patientId;
+        $appointment->patient_id = $patient->id;
         $appointment->clinic_id = $dto->clinicId;
         $appointment->starts_at = $dto->startsAt;
         $appointment->ends_at = $dto->startsAt->addHour();

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Lightit\Patients\Domain\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Lightit\Appointments\Domain\Models\Appointment;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
 /**
  * @property int                          $id
@@ -36,7 +37,7 @@ use Lightit\Appointments\Domain\Models\Appointment;
  *
  * @mixin \Eloquent
  */
-class Patient extends Model
+class Patient extends Authenticatable implements JWTSubject
 {
     use SoftDeletes;
 
@@ -45,6 +46,22 @@ class Patient extends Model
 
     #[\Override]
     protected $hidden = ['password'];
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     */
+    public function getJWTIdentifier(): mixed
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key-value array containing any custom claims to be added to the JWT.
+     */
+    public function getJWTCustomClaims(): array
+    {
+        return [];
+    }
 
     /**
      * Get the attributes that should be cast.

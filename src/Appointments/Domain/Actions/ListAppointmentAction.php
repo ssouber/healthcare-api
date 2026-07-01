@@ -6,6 +6,7 @@ namespace Lightit\Appointments\Domain\Actions;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Lightit\Appointments\Domain\Models\Appointment;
+use Lightit\Patients\Domain\Models\Patient;
 use Spatie\QueryBuilder\QueryBuilder;
 
 class ListAppointmentAction
@@ -13,12 +14,13 @@ class ListAppointmentAction
     /**
      * @return LengthAwarePaginator<int, Appointment>
      */
-    public function execute(): LengthAwarePaginator
+    public function execute(Patient $patient): LengthAwarePaginator
     {
         return QueryBuilder::for(Appointment::class)
             ->allowedFilters(['id'])
             ->allowedSorts('id')
             ->with('clinic', 'doctor', 'patient')
+            ->whereBelongsTo($patient)
             ->latest('starts_at')
             ->paginate();
     }

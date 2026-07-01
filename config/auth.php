@@ -16,8 +16,8 @@ return [
     */
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'web'),
-        'passwords' => env('AUTH_PASSWORD_BROKER', 'users'),
+        'guard' => env('AUTH_GUARD', 'api'),
+        'passwords' => env('AUTH_PASSWORD_BROKER', 'patients'),
     ],
 
     /*
@@ -38,9 +38,9 @@ return [
     */
 
     'guards' => [
-        'web' => [
-            'driver' => 'session',
-            'provider' => 'users',
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'patients',
         ],
     ],
 
@@ -65,6 +65,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', \Lightit\Users\Domain\Models\User::class),
+        ],
+        'patients' => [
+            'driver' => 'eloquent',
+            'model' => \Lightit\Patients\Domain\Models\Patient::class,
         ],
 
         // 'users' => [

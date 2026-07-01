@@ -22,9 +22,9 @@ class AppointmentResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'doctor' => DoctorResource::make()->whenLoaded('doctor'),
-            'patient' => PatientResource::make()->whenLoaded('patient'),
-            'clinic' => ClinicResource::make()->whenLoaded('clinic'),
+            'doctor' => DoctorResource::make($this->whenLoaded('doctor')),
+            'patient' => PatientResource::make($this->whenLoaded('patient')),
+            'clinic' => ClinicResource::make($this->whenLoaded('clinic')),
             'starts_at' => $this->starts_at,
             'ends_at' => $this->ends_at,
         ];
