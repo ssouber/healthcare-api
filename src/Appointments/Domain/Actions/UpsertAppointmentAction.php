@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Lightit\Appointments\Domain\Actions;
 
 use Carbon\CarbonImmutable;
+use Lightit\Appointments\App\Notifications\AppointmentCreatedNotification;
 use Lightit\Appointments\Domain\DataTransferObjects\AppointmentDto;
 use Lightit\Appointments\Domain\Enums\AppointmentStatus;
 use Lightit\Appointments\Domain\Exceptions\DoctorNotAvailableException;
@@ -41,6 +42,10 @@ class UpsertAppointmentAction
         $appointment->status = AppointmentStatus::SCHEDULED;
 
         $appointment->saveOrFail();
+
+        if ($appointment->wasRecentlyCreated) {
+            $patient->notify(new AppointmentCreatedNotification($appointment));
+        }
 
         return $appointment->load('doctor', 'patient', 'clinic');
     }

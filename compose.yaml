@@ -25,6 +25,20 @@ services:
             - pgsql
             - redis
             - minio
+            - mailpit
+    queue-worker:
+        image: 'sail-8.5/app'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - pgsql
+            - redis
+        command: 'php artisan queue:work'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
     pgsql:
         image: 'postgres:18-alpine'
         ports:
@@ -86,6 +100,22 @@ services:
                 - local
             retries: 3
             timeout: 5s
+    mailpit:
+        image: axllent/mailpit
+        container_name: mailpit
+        restart: unless-stopped
+        volumes:
+            - ./data:/data
+        ports:
+            - 8025:8025
+        environment:
+            MP_MAX_MESSAGES: 5000
+            MP_DATABASE: /data/mailpit.db
+            MP_SMTP_AUTH_ACCEPT_ANY: 1
+            MP_SMTP_AUTH_ALLOW_INSECURE: 1
+        networks:
+            - sail
+
 networks:
     sail:
         driver: bridge
