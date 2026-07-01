@@ -47,7 +47,7 @@
     "sojeda/conventional-commits": "^1.5",
     "spatie/laravel-ignition": "^2.4",
     "webgriffe/captainhook": "^2.1",
-    "worksome/coding-style": "^3.0",
+    "worksome/coding-style": "^4.0",
     "worksome/request-factories": "^3.3"
   },
   "autoload": {
