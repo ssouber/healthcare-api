@@ -23,7 +23,7 @@
     "sentry/sentry-laravel": "^4.4",
     "spatie/laravel-activitylog": "^4.12",
     "spatie/laravel-ciphersweet": "^1.7",
-    "spatie/laravel-query-builder": "^6.0"
+    "spatie/laravel-query-builder": "^7.3"
   },
   "require-dev": {
     "barryvdh/laravel-ide-helper": "^3.0",
