@@ -21,7 +21,7 @@
     "saloonphp/laravel-plugin": "^4.0",
     "saloonphp/saloon": "^4.0",
     "sentry/sentry-laravel": "^4.4",
-    "spatie/laravel-activitylog": "^4.12",
+    "spatie/laravel-activitylog": "^5.0",
     "spatie/laravel-ciphersweet": "^1.7",
     "spatie/laravel-query-builder": "^6.0"
   },
