@@ -19,12 +19,12 @@ class LoginAction
     ) {
     }
 
-    public function execute(LoginRequestDto $loginRequestDto): LoginResponseDto
+    public function execute(LoginRequestDto $dto): LoginResponseDto
     {
         /** @var JWTGuard $guard */
         $guard = $this->factory->guard('api');
 
-        $token = $guard->attempt((array) $loginRequestDto);
+        $token = $guard->attempt(['email' => $dto->email, 'password' => $dto->password]);
 
         if (! $token) {
             throw new UnauthorizedException();
