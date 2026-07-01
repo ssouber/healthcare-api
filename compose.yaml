@@ -26,6 +26,19 @@ services:
             - redis
             - minio
             - mailpit
+    queue-worker:
+        image: 'sail-8.5/app'
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - pgsql
+            - redis
+        command: 'php artisan queue:work'
+        environment:
+            WWWUSER: '${WWWUSER}'
+            LARAVEL_SAIL: 1
     pgsql:
         image: 'postgres:18-alpine'
         ports:
@@ -102,6 +115,7 @@ services:
             MP_SMTP_AUTH_ALLOW_INSECURE: 1
         networks:
             - sail
+
 networks:
     sail:
         driver: bridge
