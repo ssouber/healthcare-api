@@ -11,7 +11,6 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Lightit\Appointments\Domain\Models\Appointment;
 use Lightit\Patients\Domain\Models\Patient;
-use Lightit\Shared\Domain\Enums\DateFormat;
 
 class AppointmentCreatedNotification extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
@@ -28,15 +27,10 @@ class AppointmentCreatedNotification extends Notification implements ShouldQueue
 
     public function toMail(Patient $notifiable): MailMessage
     {
-        $appointment = $this->appointment;
-
         return new MailMessage()
-                    ->greeting("Hello {$notifiable->name}!")
-                    ->line("Your appointment has been confirmed with the following details: \n")
-                    ->line("Doctor: {$appointment->doctor->name}")
-                    ->line("Patient: {$appointment->patient->name}")
-                    ->line("Date: {$appointment->starts_at->format(DateFormat::DATETIME->value)}")
-                    ->line("Clinic: {$appointment->clinic->name}\n")
-                    ->salutation('Have a nice day!');
+            ->markdown('emails.appointment-created', [
+                'appointment' => $this->appointment,
+                'patient'     => $notifiable,
+            ]);
     }
 }
