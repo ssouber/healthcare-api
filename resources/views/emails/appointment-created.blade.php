@@ -16,6 +16,6 @@ Hello **{{ $patient->name }}**, your appointment has been successfully scheduled
 If you need to reschedule or cancel, please contact us as soon as possible.
 
 Thanks,<br>
-{{ config('app.name') }}
+{{ Config::string('app.name') }}
 
 </x-mail::message>
