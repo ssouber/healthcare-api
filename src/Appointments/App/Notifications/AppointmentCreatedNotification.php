@@ -10,25 +10,23 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Lightit\Appointments\Domain\Models\Appointment;
+use Lightit\Patients\Domain\Models\Patient;
 use Lightit\Shared\Domain\Enums\DateFormat;
 
 class AppointmentCreatedNotification extends Notification implements ShouldQueue, ShouldBeEncrypted
 {
     use Queueable;
 
-    /**
-     * @return array<int, string>
-     */
     public function __construct(protected Appointment $appointment)
     {
     }
 
-    public function via(object $notifiable): array
+    public function via(Patient $notifiable): array
     {
         return ['mail'];
     }
 
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(Patient $notifiable): MailMessage
     {
         $appointment = $this->appointment;
 
