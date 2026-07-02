@@ -9,6 +9,7 @@ use Lightit\Doctors\App\Resources\DoctorResource;
 use Lightit\Doctors\Domain\Models\Doctor;
 use Tests\RequestFactories\StoreDoctorRequestFactory;
 use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\postJson;
 
 function getLongName(): string
@@ -23,7 +24,7 @@ dataset(name: 'validation-rules', dataset: [
     'name not too long' => ['name', getLongName(), 'name'],
 
     'clinics must be an array' => ['clinics', 'clinic-1', 'clinics'],
-    'clinics must reference existing clinics' => ['clinics', [0], 'clinics.0'],
+    'clinics must reference existing clinics' => ['clinics', [0], 'clinics'],
     'clinics items must be integers' => ['clinics', ['not-a-number'], 'clinics.0'],
 ]);
 
@@ -88,8 +89,19 @@ describe('doctors', function (): void {
         expect($doctor->clinics()->count())->toBe(0);
     });
 
-    it(
-        'cannot create a doctor with invalid data',
+    it(description: 'cannot create a doctor with unexisting clinic', closure: function (): void {
+        $data = StoreDoctorRequestFactory::new()->state(['clinics' => [0]])->create();
+
+        $response = postJson(url('/api/doctors'), $data);
+
+        $response->assertUnprocessable();
+
+        assertDatabaseMissing('doctors', [
+            'name' => $data['name'],
+        ]);
+    });
+
+    it('cannot create a doctor with invalid data',
         function (string $field, string|array $value, string $errorField): void {
             $data = StoreDoctorRequestFactory::new()->create();
 
