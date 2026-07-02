@@ -101,8 +101,9 @@ describe('doctors', function (): void {
         ]);
     });
 
-    it('cannot create a doctor with invalid data',
-        function (string $field, string|array $value, string $errorField): void {
+    it(
+        'cannot create a doctor with invalid data',
+        closure: function (string $field, string|array $value, string $errorField): void {
             $data = StoreDoctorRequestFactory::new()->create();
 
             $response = postJson(url('/api/doctors'), [...$data, $field => $value]);
