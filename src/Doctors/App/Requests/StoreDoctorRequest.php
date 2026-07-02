@@ -41,7 +41,7 @@ class StoreDoctorRequest extends FormRequest
             $existingCount = Clinic::query()->whereIn('id', $clinics)->count();
 
             if ($existingCount !== count($clinics)) {
-                $validator->errors()->add(self::CLINICS, 'The selected clinics is invalid.');
+                $validator->errors()->add(self::CLINICS, 'The clinics are invalid.');
             }
         });
     }
