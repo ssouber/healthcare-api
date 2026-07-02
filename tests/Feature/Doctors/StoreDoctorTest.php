@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Support\Str;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Lightit\Doctors\App\Controllers\StoreDoctorController;
@@ -38,7 +40,10 @@ describe('doctors', function (): void {
 
         $doctor->load('clinics');
 
-        $expected = json_decode(json_encode(DoctorResource::make($doctor)->resolve()), true);
+        $encoded = json_encode(DoctorResource::make($doctor)->resolve());
+        assert(is_string($encoded));
+
+        $expected = json_decode($encoded, true);
         assert(is_array($expected));
 
         $response
@@ -55,9 +60,12 @@ describe('doctors', function (): void {
             'name' => $data['name'],
         ]);
 
+        $clinics = $data['clinics'];
+        assert(is_array($clinics));
+
         assertDatabaseHas('clinic_doctor', [
             'doctor_id' => $doctor->id,
-            'clinic_id' => $data['clinics'][0],
+            'clinic_id' => $clinics[0],
         ]);
     });
 
