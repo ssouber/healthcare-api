@@ -6,6 +6,7 @@ use Database\Factories\ClinicFactory;
 use Database\Factories\DoctorFactory;
 use Lightit\Doctors\App\Controllers\GetDoctorController;
 use Lightit\Doctors\App\Resources\DoctorResource;
+use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
 
 describe('doctors', function (): void {
@@ -27,6 +28,17 @@ describe('doctors', function (): void {
 
     it(description: 'returns not found when the doctor does not exist', closure: function (): void {
         getJson(url('/api/doctors/999999'))
+            ->assertNotFound();
+    });
+
+    it(description: 'returns not found when the doctor was deleted', closure: function (): void {
+        $doctor = DoctorFactory::new()
+            ->hasClinics(ClinicFactory::new()->count(2))
+            ->createOne();
+
+        deleteJson(url("/api/doctors/$doctor->id"));
+
+        getJson(url("/api/doctors/$doctor->id"))
             ->assertNotFound();
     });
 });

@@ -27,4 +27,13 @@ describe('doctors', function (): void {
 
         $response->assertNotFound();
     });
+
+    it(description: 'returns not found when the doctor was soft deleted', closure: function (): void {
+        $doctor = DoctorFactory::new()->createOne();
+        deleteJson(url("/api/doctors/$doctor->id"));
+
+        $response = deleteJson(url("/api/doctors/$doctor->id"));
+
+        $response->assertNotFound();
+    });
 });
