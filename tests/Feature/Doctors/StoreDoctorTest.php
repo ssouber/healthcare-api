@@ -41,11 +41,9 @@ describe('doctors', function (): void {
 
         $doctor->load('clinics');
 
-        $encoded = json_encode(DoctorResource::make($doctor)->resolve());
-        assert(is_string($encoded));
-
-        $expected = json_decode($encoded, true);
-        assert(is_array($expected));
+        /** @var array{data: array<string, mixed>} $resourceData */
+        $resourceData = DoctorResource::make($doctor)->response()->getData(true);
+        $expected = $resourceData['data'];
 
         $response
             ->assertCreated()
@@ -56,13 +54,13 @@ describe('doctors', function (): void {
                 )
             );
 
-        assertDatabaseHas('doctors', [
+        assertDatabaseHas(Doctor::class, [
             'id' => $doctor->id,
             'name' => $data['name'],
         ]);
 
+        /** @var array<int> $clinics */
         $clinics = $data['clinics'];
-        assert(is_array($clinics));
 
         assertDatabaseHas('clinic_doctor', [
             'doctor_id' => $doctor->id,
@@ -81,7 +79,7 @@ describe('doctors', function (): void {
 
         $response->assertCreated();
 
-        assertDatabaseHas('doctors', [
+        assertDatabaseHas(Doctor::class, [
             'id' => $doctor->id,
             'name' => $data['name'],
         ]);
@@ -96,7 +94,7 @@ describe('doctors', function (): void {
 
         $response->assertUnprocessable();
 
-        assertDatabaseMissing('doctors', [
+        assertDatabaseMissing(Doctor::class, [
             'name' => $data['name'],
         ]);
     });
