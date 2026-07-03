@@ -73,18 +73,22 @@ describe('doctors', function (): void {
 
         $response = postJson(url('/api/doctors'), $data);
 
-        $doctor = Doctor::query()
-            ->where('name', $data['name'])
-            ->firstOrFail();
+        $doctorId = $response->json('data.id');
 
         $response->assertCreated();
 
         assertDatabaseHas(Doctor::class, [
-            'id' => $doctor->id,
+            'id' => $doctorId,
             'name' => $data['name'],
         ]);
 
-        expect($doctor->clinics()->count())->toBe(0);
+        /** @var array<int, mixed> $clinics */
+        $clinics = $response->json('data.clinics');
+        expect($clinics)->toBeEmpty();
+
+        assertDatabaseMissing('clinic_doctor', [
+            'doctor_id' => $doctorId,
+        ]);
     });
 
     it(description: 'cannot create a doctor with unexisting clinic', closure: function (): void {
