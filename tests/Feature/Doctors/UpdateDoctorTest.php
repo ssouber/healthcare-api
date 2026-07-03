@@ -45,7 +45,7 @@ describe('doctors', function (): void {
             ->assertOk()
             ->assertJsonPath('data', $expected);
 
-        assertDatabaseHas('doctors', [
+        assertDatabaseHas(Doctor::class, [
             'id' => $updatedDoctor->id,
             'name' => $data['name'],
         ]);

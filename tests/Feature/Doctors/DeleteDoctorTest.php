@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Database\Factories\DoctorFactory;
 use Lightit\Doctors\App\Controllers\DeleteDoctorController;
+use Lightit\Doctors\Domain\Models\Doctor;
 use function Pest\Laravel\assertSoftDeleted;
 use function Pest\Laravel\deleteJson;
 
@@ -16,7 +17,7 @@ describe('doctors', function (): void {
 
         $response->assertNoContent();
 
-        assertSoftDeleted('doctors', [
+        assertSoftDeleted(Doctor::class, [
             'id' => $doctor->id,
         ]);
     });
