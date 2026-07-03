@@ -21,13 +21,9 @@ dataset(name: 'update-validation-rules', dataset: [
 describe('doctors', function (): void {
     /** @see UpdateDoctorController */
     it(description: 'can update a doctor successfully', closure: function (): void {
-        $existingDoctor = DoctorFactory::new()->createOne([
-            'name' => 'old',
-        ]);
+        $existingDoctor = DoctorFactory::new()->name('old name')->createOne();
 
-        $data = UpdateDoctorRequestFactory::new()->create([
-            'name' => 'new name',
-        ]);
+        $data = UpdateDoctorRequestFactory::new()->name('new name')->create();
 
         $response = putJson(url("/api/doctors/$existingDoctor->id"), $data);
 

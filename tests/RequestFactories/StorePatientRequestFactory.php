@@ -6,17 +6,14 @@ namespace Tests\RequestFactories;
 
 use Worksome\RequestFactories\RequestFactory;
 
-class UpdateDoctorRequestFactory extends RequestFactory
+class StorePatientRequestFactory extends RequestFactory
 {
     public function definition(): array
     {
         return [
             'name' => fake()->name(),
+            'email' => fake()->unique()->safeEmail(),
+            'password' => 'Healthcare2027!',
         ];
-    }
-
-    public function name(string $name): self
-    {
-        return $this->state(['name' => $name]);
     }
 }
