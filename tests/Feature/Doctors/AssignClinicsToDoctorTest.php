@@ -27,11 +27,9 @@ describe('doctors', function (): void {
 
         $doctor->load('clinics');
 
-        $encoded = json_encode(DoctorResource::make($doctor)->resolve());
-        assert(is_string($encoded));
-
-        $expected = json_decode($encoded, true);
-        assert(is_array($expected));
+        /** @var array{data: array<string, mixed>} $resourceData */
+        $resourceData = DoctorResource::make($doctor)->response()->getData(true);
+        $expected = $resourceData['data'];
 
         $response
             ->assertCreated()

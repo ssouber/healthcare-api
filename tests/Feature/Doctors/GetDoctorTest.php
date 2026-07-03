@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Database\Factories\ClinicFactory;
 use Database\Factories\DoctorFactory;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Lightit\Doctors\App\Controllers\GetDoctorController;
 use Lightit\Doctors\App\Resources\DoctorResource;
 use function Pest\Laravel\getJson;
@@ -16,29 +15,18 @@ describe('doctors', function (): void {
             ->hasClinics(ClinicFactory::new()->count(2))
             ->createOne();
 
-        $response = getJson(url("/api/doctors/$doctor->id"));
-
         $doctor->load('clinics');
 
-        $encoded = json_encode(DoctorResource::make($doctor)->resolve());
-        assert(is_string($encoded));
+        /** @var array{data: array} $expected */
+        $expected = DoctorResource::make($doctor)->response()->getData(true);
 
-        $expected = json_decode($encoded, true);
-        assert(is_array($expected));
-
-        $response
+        getJson(url("/api/doctors/$doctor->id"))
             ->assertOk()
-            ->assertJson(
-                fn (AssertableJson $json): AssertableJson => $json->has(
-                    'data',
-                    fn (AssertableJson $json): AssertableJson => $json->whereAll($expected)
-                )
-            );
+                ->assertJsonPath('data', $expected['data']);
     });
 
     it(description: 'returns not found when the doctor does not exist', closure: function (): void {
-        $response = getJson(url('/api/doctors/999999'));
-
-        $response->assertNotFound();
+        getJson(url('/api/doctors/999999'))
+            ->assertNotFound();
     });
 });

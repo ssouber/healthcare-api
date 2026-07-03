@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Str;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Lightit\Doctors\App\Controllers\StoreDoctorController;
 use Lightit\Doctors\App\Resources\DoctorResource;
 use Lightit\Doctors\Domain\Models\Doctor;
@@ -37,9 +36,8 @@ describe('doctors', function (): void {
 
         $doctor = Doctor::query()
             ->where('name', $data['name'])
+            ->with('clinics')
             ->firstOrFail();
-
-        $doctor->load('clinics');
 
         /** @var array{data: array<string, mixed>} $resourceData */
         $resourceData = DoctorResource::make($doctor)->response()->getData(true);
@@ -47,12 +45,7 @@ describe('doctors', function (): void {
 
         $response
             ->assertCreated()
-            ->assertJson(
-                fn (AssertableJson $json): AssertableJson => $json->has(
-                    'data',
-                    fn (AssertableJson $json): AssertableJson => $json->whereAll($expected)
-                )
-            );
+            ->assertJsonPath('data', $expected);
 
         assertDatabaseHas(Doctor::class, [
             'id' => $doctor->id,
