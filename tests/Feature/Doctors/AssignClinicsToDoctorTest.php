@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use Database\Factories\ClinicFactory;
 use Database\Factories\DoctorFactory;
-use Illuminate\Testing\Fluent\AssertableJson;
 use Lightit\Doctors\App\Resources\DoctorResource;
 use Tests\RequestFactories\AssignClinicsToDoctorRequestFactory;
 use function Pest\Laravel\assertDatabaseHas;
@@ -33,15 +32,10 @@ describe('doctors', function (): void {
 
         $response
             ->assertCreated()
-            ->assertJson(
-                fn (AssertableJson $json): AssertableJson => $json->has(
-                    'data',
-                    fn (AssertableJson $json): AssertableJson => $json->whereAll($expected)
-                )
-            );
+            ->assertJsonPath('data', $expected);
 
+        /** @var array $clinics */
         $clinics = $data['clinics'];
-        assert(is_array($clinics));
 
         assertDatabaseHas('clinic_doctor', [
             'doctor_id' => $doctor->id,
@@ -50,11 +44,10 @@ describe('doctors', function (): void {
     });
 
     it(description: 'replaces the previously assigned clinics', closure: function (): void {
+        $previousClinic = ClinicFactory::new()->createOne();
         $doctor = DoctorFactory::new()
-            ->hasClinics(ClinicFactory::new())
+            ->recycle($previousClinic)
             ->createOne();
-
-        $previousClinicId = $doctor->clinics()->firstOrFail()->id;
 
         $data = AssignClinicsToDoctorRequestFactory::new()->create();
 
@@ -62,8 +55,8 @@ describe('doctors', function (): void {
 
         $response->assertCreated();
 
+        /** @var array $clinics */
         $clinics = $data['clinics'];
-        assert(is_array($clinics));
 
         assertDatabaseHas('clinic_doctor', [
             'doctor_id' => $doctor->id,
@@ -72,7 +65,7 @@ describe('doctors', function (): void {
 
         assertDatabaseMissing('clinic_doctor', [
             'doctor_id' => $doctor->id,
-            'clinic_id' => $previousClinicId,
+            'clinic_id' => $previousClinic->id,
         ]);
     });
 
@@ -85,7 +78,7 @@ describe('doctors', function (): void {
 
         $response->assertCreated();
 
-        expect($doctor->clinics()->count())->toBe(0);
+        expect($doctor->clinics()->count())->toBeEmpty();
     });
 
     it(

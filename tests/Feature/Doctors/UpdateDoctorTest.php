@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Database\Factories\DoctorFactory;
 use Illuminate\Support\Str;
-use Lightit\Doctors\App\Controllers\StoreDoctorController;
+use Lightit\Doctors\App\Controllers\UpdateDoctorController;
 use Lightit\Doctors\App\Resources\DoctorResource;
 use Lightit\Doctors\Domain\Models\Doctor;
 use Tests\RequestFactories\UpdateDoctorRequestFactory;
@@ -19,7 +19,7 @@ dataset(name: 'update-validation-rules', dataset: [
 ]);
 
 describe('doctors', function (): void {
-    /** @see StoreDoctorController */
+    /** @see UpdateDoctorController */
     it(description: 'can update a doctor successfully', closure: function (): void {
         $existingDoctor = DoctorFactory::new()->createOne([
             'name' => 'old',
