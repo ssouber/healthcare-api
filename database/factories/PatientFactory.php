@@ -37,12 +37,12 @@ class PatientFactory extends Factory
 
     public function name(string $name): self
     {
-        return $this->state(['name' => $name]);
+        return $this->set('name', $name);
     }
 
     public function email(string $email): self
     {
-        return $this->state(['email' => $email]);
+        return $this->set('email', $email);
     }
 
 }
