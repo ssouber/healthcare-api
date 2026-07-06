@@ -8,6 +8,7 @@ use Database\Factories\PatientFactory;
 use Lightit\Appointments\App\Resources\AppointmentResource;
 use Lightit\Appointments\Domain\Enums\AppointmentStatus;
 use Lightit\Appointments\Domain\Models\Appointment;
+use Lightit\Doctors\Domain\Models\Doctor;
 use Tests\RequestFactories\UpsertAppointmentRequestFactory;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
@@ -72,6 +73,51 @@ describe('appointments', function (): void {
 
         putJson(url("api/appointments/$appointment->id"), $data)
             ->assertUnauthorized();
+    });
+
+    it('cannot update an appointment when the doctor is already booked', function (): void {
+        $patient = PatientFactory::new()->createOne();
+        $appointment = AppointmentFactory::new()
+            ->forPatient($patient)
+            ->startsAt(CarbonImmutable::now()->addHours(24))
+            ->createOne();
+
+        $startsAt = CarbonImmutable::now()->addDays(3);
+        $data = UpsertAppointmentRequestFactory::new()->startsAt($startsAt)->create();
+
+        /** @var Doctor $doctor */
+        $doctor = Doctor::query()->findOrFail($data['doctor']);
+
+        AppointmentFactory::new()
+            ->forDoctor($doctor)
+            ->startsAt($startsAt)
+            ->createOne();
+
+        actingAs($patient)
+            ->putJson(url("api/appointments/$appointment->id"), $data)
+            ->assertConflict()
+            ->assertJsonPath('error.code', 'doctor_not_available');
+    });
+
+    it('cannot update an appointment when the patient is already booked', function (): void {
+        $patient = PatientFactory::new()->createOne();
+        $appointment = AppointmentFactory::new()
+            ->forPatient($patient)
+            ->startsAt(CarbonImmutable::now()->addHours(24))
+            ->createOne();
+
+        $startsAt = CarbonImmutable::now()->addDays(3);
+        $data = UpsertAppointmentRequestFactory::new()->startsAt($startsAt)->create();
+
+        AppointmentFactory::new()
+            ->forPatient($patient)
+            ->startsAt($startsAt)
+            ->createOne();
+
+        actingAs($patient)
+            ->putJson(url("api/appointments/$appointment->id"), $data)
+            ->assertConflict()
+            ->assertJsonPath('error.code', 'patient_not_available');
     });
 
     it(
