@@ -2,22 +2,26 @@
 
 declare(strict_types=1);
 
+use Carbon\CarbonImmutable;
 use Database\Factories\AppointmentFactory;
 use Database\Factories\PatientFactory;
+use Lightit\Appointments\Domain\Enums\AppointmentStatus;
 use Lightit\Appointments\Domain\Models\Appointment;
 use function Pest\Laravel\actingAs;
-use function Pest\Laravel\deleteJson;
+use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertNotSoftDeleted;
 use function Pest\Laravel\assertSoftDeleted;
+use function Pest\Laravel\deleteJson;
 
 describe('appointments', function (): void {
     /** @see DeleteAppointmentController */
-    it('delete the authenticated patient appointment', function (): void {
+    it('soft deletes the appointment when it starts more than 48 hours from now', function (): void {
         $patient = PatientFactory::new()->createOne();
 
         $appointment = AppointmentFactory::new()
             ->forPatient($patient)
-            ->createOne()
-            ->load('clinic', 'doctor', 'patient');
+            ->startsAt(CarbonImmutable::now()->addHours(72))
+            ->createOne();
 
         actingAs($patient)
             ->deleteJson(url("api/appointments/$appointment->id"))
@@ -25,6 +29,29 @@ describe('appointments', function (): void {
 
         assertSoftDeleted(Appointment::class, [
             'id' => $appointment->id,
+            'status' => AppointmentStatus::SCHEDULED->value,
+        ]);
+    });
+
+    it('cancels the appointment when it starts within the next 48 hours', function (): void {
+        $patient = PatientFactory::new()->createOne();
+
+        $appointment = AppointmentFactory::new()
+            ->forPatient($patient)
+            ->startsAt(CarbonImmutable::now()->addHours(24))
+            ->createOne();
+
+        actingAs($patient)
+            ->deleteJson(url("api/appointments/$appointment->id"))
+            ->assertNoContent();
+
+        assertNotSoftDeleted(Appointment::class, [
+            'id' => $appointment->id,
+        ]);
+
+        assertDatabaseHas(Appointment::class, [
+            'id' => $appointment->id,
+            'status' => AppointmentStatus::CANCELLED->value,
         ]);
     });
 
@@ -60,8 +87,8 @@ describe('appointments', function (): void {
 
         $appointment = AppointmentFactory::new()
             ->forPatient($patient)
-            ->createOne()
-            ->load('clinic', 'doctor', 'patient');
+            ->startsAt(CarbonImmutable::now()->addHours(72))
+            ->createOne();
 
         actingAs($patient)
             ->deleteJson(url("api/appointments/$appointment->id"));
@@ -69,6 +96,5 @@ describe('appointments', function (): void {
         actingAs($patient)
             ->deleteJson(url("api/appointments/$appointment->id"))
             ->assertNotFound();
-
     });
 });
