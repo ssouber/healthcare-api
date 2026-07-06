@@ -10,7 +10,7 @@ use function Pest\Laravel\deleteJson;
 
 describe('clinics', function (): void {
     /** @see DeleteClinicController */
-    it(description: 'can delete a clinic successfully', closure: function (): void {
+    it('can delete a clinic successfully', function (): void {
         $clinic = ClinicFactory::new()->createOne();
 
         $response = deleteJson(url("/api/clinics/$clinic->id"));
@@ -22,13 +22,13 @@ describe('clinics', function (): void {
         ]);
     });
 
-    it(description: 'returns not found when the clinic does not exist', closure: function (): void {
+    it('returns not found when the clinic does not exist', function (): void {
         $response = deleteJson(url('/api/clinics/999999'));
 
         $response->assertNotFound();
     });
 
-    it(description: 'returns not found when the clinic was soft deleted', closure: function (): void {
+    it('returns not found when the clinic was soft deleted', function (): void {
         $clinic = ClinicFactory::new()->createOne();
         deleteJson(url("/api/clinics/$clinic->id"));
 

@@ -11,14 +11,14 @@ use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\postJson;
 
-dataset(name: 'assign-doctors-validation-rules', dataset: [
+dataset('assign-doctors-validation-rules', [
     'doctors must be an array' => ['doctors', 'doctor-1', 'doctors'],
     'doctors must reference existing doctors' => ['doctors', [0], 'doctors'],
 ]);
 
 describe('clinics', function (): void {
     /** @see AssignDoctorsToClinicController */
-    it(description: 'can assign doctors to a clinic successfully', closure: function (): void {
+    it('can assign doctors to a clinic successfully', function (): void {
         $clinic = ClinicFactory::new()->createOne();
 
         $data = AssignDoctorsToClinicRequestFactory::new()->create();
@@ -44,7 +44,7 @@ describe('clinics', function (): void {
         ]);
     });
 
-    it(description: 'replaces the previously assigned doctors', closure: function (): void {
+    it('replaces the previously assigned doctors', function (): void {
         $clinic = ClinicFactory::new()
             ->hasDoctors(DoctorFactory::new())
             ->createOne();
@@ -71,7 +71,7 @@ describe('clinics', function (): void {
         ]);
     });
 
-    it(description: 'detaches every doctor when none is provided', closure: function (): void {
+    it('detaches every doctor when none is provided', function (): void {
         $clinic = ClinicFactory::new()
             ->hasDoctors(DoctorFactory::new()->count(2))
             ->createOne();
@@ -85,7 +85,7 @@ describe('clinics', function (): void {
 
     it(
         'cannot assign doctors with invalid data',
-        closure: function (string $field, string|array $value, string $errorField): void {
+        function (string $field, string|array $value, string $errorField): void {
             $clinic = ClinicFactory::new()->createOne();
 
             $response = postJson(url("/api/clinics/$clinic->id/doctors"), [$field => $value]);

@@ -10,7 +10,7 @@ use function Pest\Laravel\getJson;
 
 describe('patients', function (): void {
     /** @see GetPatientController */
-    it(description: 'can get a patient successfully', closure: function (): void {
+    it('can get a patient successfully', function (): void {
         $patient = PatientFactory::new()->createOne();
 
         /** @var array{data: array} $expected */
@@ -21,12 +21,12 @@ describe('patients', function (): void {
             ->assertJsonPath('data', $expected['data']);
     });
 
-    it(description: 'returns not found when the patient does not exist', closure: function (): void {
+    it('returns not found when the patient does not exist', function (): void {
         getJson(url('/api/patients/999999'))
             ->assertNotFound();
     });
 
-    it(description: 'returns not found when the patient was deleted', closure: function (): void {
+    it('returns not found when the patient was deleted', function (): void {
         $patient = PatientFactory::new()->createOne();
 
         deleteJson(url("/api/patients/$patient->id"));

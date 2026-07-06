@@ -11,16 +11,16 @@ use Tests\RequestFactories\UpdateDoctorRequestFactory;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\putJson;
 
-dataset(name: 'update-validation-rules', dataset: [
+dataset('update-validation-rules', [
     'name is required' => ['name', '', 'name'],
     'name be a string' => ['name', ['array'], 'name'],
     'name not too short' => ['name', 'ams', 'name'],
-    'name not too long' => ['name', Str::repeat(string: 'longg', times: 60), 'name'],
+    'name not too long' => ['name', Str::repeat('longg', 60), 'name'],
 ]);
 
 describe('doctors', function (): void {
     /** @see UpdateDoctorController */
-    it(description: 'can update a doctor successfully', closure: function (): void {
+    it('can update a doctor successfully', function (): void {
         $existingDoctor = DoctorFactory::new()->name('old name')->createOne();
 
         $data = UpdateDoctorRequestFactory::new()->name('new name')->create();
@@ -49,7 +49,7 @@ describe('doctors', function (): void {
 
     it(
         'cannot update a doctor with invalid data',
-        closure: function (string $field, string|array $value, string $errorField): void {
+        function (string $field, string|array $value, string $errorField): void {
             $existingDoctor = DoctorFactory::new()->createOne();
 
             $data = UpdateDoctorRequestFactory::new()->create();

@@ -11,20 +11,20 @@ use Tests\RequestFactories\UpdateClinicRequestFactory;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\putJson;
 
-dataset(name: 'update-clinic-validation-rules', dataset: [
+dataset('update-clinic-validation-rules', [
     'name is required' => ['name', '', 'name'],
     'name must be a string' => ['name', ['array'], 'name'],
     'name not too short' => ['name', 'ams', 'name'],
-    'name not too long' => ['name', Str::repeat(string: 'longg', times: 60), 'name'],
+    'name not too long' => ['name', Str::repeat('longg', 60), 'name'],
 
     'address is required' => ['address', '', 'address'],
     'address must be a string' => ['address', ['array'], 'address'],
-    'address not too long' => ['address', Str::repeat(string: 'longg', times: 60), 'address'],
+    'address not too long' => ['address', Str::repeat('longg', 60), 'address'],
 ]);
 
 describe('clinics', function (): void {
     /** @see UpdateClinicController */
-    it(description: 'can update a clinic successfully', closure: function (): void {
+    it('can update a clinic successfully', function (): void {
         $existingClinic = ClinicFactory::new()->name('old name')->createOne();
 
         $data = UpdateClinicRequestFactory::new()->name('new name')->create();
@@ -51,7 +51,7 @@ describe('clinics', function (): void {
         ]);
     });
 
-    it(description: 'returns not found when the clinic does not exist', closure: function (): void {
+    it('returns not found when the clinic does not exist', function (): void {
         $data = UpdateClinicRequestFactory::new()->create();
 
         putJson(url('/api/clinics/999999'), $data)
@@ -60,7 +60,7 @@ describe('clinics', function (): void {
 
     it(
         'cannot update a clinic with invalid data',
-        closure: function (string $field, string|array $value, string $errorField): void {
+        function (string $field, string|array $value, string $errorField): void {
             $existingClinic = ClinicFactory::new()->createOne();
 
             $data = UpdateClinicRequestFactory::new()->create();

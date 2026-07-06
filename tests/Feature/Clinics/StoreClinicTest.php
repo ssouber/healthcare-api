@@ -11,15 +11,15 @@ use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\postJson;
 
-dataset(name: 'store-clinic-validation-rules', dataset: [
+dataset('store-clinic-validation-rules', [
     'name is required' => ['name', '', 'name'],
     'name must be a string' => ['name', ['array'], 'name'],
     'name not too short' => ['name', 'ams', 'name'],
-    'name not too long' => ['name', Str::repeat(string: 'longg', times: 60), 'name'],
+    'name not too long' => ['name', Str::repeat('longg', 60), 'name'],
 
     'address is required' => ['address', '', 'address'],
     'address must be a string' => ['address', ['array'], 'address'],
-    'address not too long' => ['address', Str::repeat(string: 'longg', times: 60), 'address'],
+    'address not too long' => ['address', Str::repeat('longg', 60), 'address'],
 
     'doctors must be an array' => ['doctors', 'doctor-1', 'doctors'],
     'doctors must reference existing doctors' => ['doctors', [0], 'doctors'],
@@ -27,7 +27,7 @@ dataset(name: 'store-clinic-validation-rules', dataset: [
 
 describe('clinics', function (): void {
     /** @see StoreClinicController */
-    it(description: 'can create a clinic with doctors successfully', closure: function (): void {
+    it('can create a clinic with doctors successfully', function (): void {
         $data = StoreClinicRequestFactory::new()->create();
 
         $response = postJson(url('/api/clinics'), $data);
@@ -60,7 +60,7 @@ describe('clinics', function (): void {
         ]);
     });
 
-    it(description: 'can create a clinic without doctors', closure: function (): void {
+    it('can create a clinic without doctors', function (): void {
         $data = StoreClinicRequestFactory::new()->without('doctors')->create();
 
         $response = postJson(url('/api/clinics'), $data);
@@ -81,7 +81,7 @@ describe('clinics', function (): void {
         ]);
     });
 
-    it(description: 'cannot create a clinic with an unexisting doctor', closure: function (): void {
+    it('cannot create a clinic with an unexisting doctor', function (): void {
         $data = StoreClinicRequestFactory::new()->doctors([0])->create();
 
         $response = postJson(url('/api/clinics'), $data);
@@ -95,7 +95,7 @@ describe('clinics', function (): void {
 
     it(
         'cannot create a clinic with invalid data',
-        closure: function (string $field, string|array $value, string $errorField): void {
+        function (string $field, string|array $value, string $errorField): void {
             $data = StoreClinicRequestFactory::new()->create();
 
             $response = postJson(url('/api/clinics'), [...$data, $field => $value]);

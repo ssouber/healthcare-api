@@ -10,14 +10,14 @@ use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\postJson;
 
-dataset(name: 'assign-clinics-validation-rules', dataset: [
+dataset('assign-clinics-validation-rules', [
     'clinics must be an array' => ['clinics', 'clinic-1', 'clinics'],
     'clinics must reference existing clinics' => ['clinics', [0], 'clinics'],
     'clinics items must be integers' => ['clinics', ['not-a-number'], 'clinics.0'],
 ]);
 
 describe('doctors', function (): void {
-    it(description: 'can assign clinics to a doctor successfully', closure: function (): void {
+    it('can assign clinics to a doctor successfully', function (): void {
         $doctor = DoctorFactory::new()->createOne();
 
         $data = AssignClinicsToDoctorRequestFactory::new()->create();
@@ -43,7 +43,7 @@ describe('doctors', function (): void {
         ]);
     });
 
-    it(description: 'replaces the previously assigned clinics', closure: function (): void {
+    it('replaces the previously assigned clinics', function (): void {
         $previousClinic = ClinicFactory::new()->createOne();
         $doctor = DoctorFactory::new()
             ->recycle($previousClinic)
@@ -69,7 +69,7 @@ describe('doctors', function (): void {
         ]);
     });
 
-    it(description: 'detaches every clinic when none is provided', closure: function (): void {
+    it('detaches every clinic when none is provided', function (): void {
         $doctor = DoctorFactory::new()
             ->hasClinics(ClinicFactory::new()->count(2))
             ->createOne();
@@ -83,7 +83,7 @@ describe('doctors', function (): void {
 
     it(
         'cannot assign clinics with invalid data',
-        closure: function (string $field, string|array $value, string $errorField): void {
+        function (string $field, string|array $value, string $errorField): void {
             $doctor = DoctorFactory::new()->createOne();
 
             $response = postJson(url("/api/doctors/$doctor->id/clinics"), [$field => $value]);

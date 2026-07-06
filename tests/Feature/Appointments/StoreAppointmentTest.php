@@ -13,7 +13,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\postJson;
 
-dataset(name: 'validation-rules', dataset: [
+dataset('validation-rules', [
     'doctor is required' => ['doctor', '', 'doctor'],
     'doctor must be an integer' => ['doctor', 'not-a-number', 'doctor'],
     'doctor must reference an existing doctor' => ['doctor', 0, 'doctor'],
@@ -100,8 +100,8 @@ describe('appointments', function (): void {
     });
 
     it(
-        description: 'cannot create an appointment with invalid data',
-        closure: function (string $field, string|int $value, string $errorField): void {
+        'cannot create an appointment with invalid data',
+        function (string $field, string|int $value, string $errorField): void {
             $patient = PatientFactory::new()->createOne();
             $data = UpsertAppointmentRequestFactory::new()->create();
 

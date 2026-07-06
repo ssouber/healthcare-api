@@ -11,11 +11,11 @@ use Tests\RequestFactories\UpdatePatientRequestFactory;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\putJson;
 
-dataset(name: 'update-patient-validation-rules', dataset: [
+dataset('update-patient-validation-rules', [
     'name is required' => ['name', '', 'name'],
     'name must be a string' => ['name', ['array'], 'name'],
     'name not too short' => ['name', 'ams', 'name'],
-    'name not too long' => ['name', Str::repeat(string: 'longg', times: 60), 'name'],
+    'name not too long' => ['name', Str::repeat('longg', 60), 'name'],
 
     'email is required' => ['email', '', 'email'],
     'email must be valid' => ['email', 'not-an-email', 'email'],
@@ -23,7 +23,7 @@ dataset(name: 'update-patient-validation-rules', dataset: [
 
 describe('patients', function (): void {
     /** @see UpdatePatientController */
-    it(description: 'can update a patient successfully', closure: function (): void {
+    it('can update a patient successfully', function (): void {
         $existingPatient = PatientFactory::new()->name('old name')->createOne();
 
         $data = UpdatePatientRequestFactory::new()->name('new name')->create();
@@ -49,7 +49,7 @@ describe('patients', function (): void {
         ]);
     });
 
-    it(description: 'can update a patient keeping its own email', closure: function (): void {
+    it('can update a patient keeping its own email', function (): void {
         $existingPatient = PatientFactory::new()->createOne();
 
         $data = UpdatePatientRequestFactory::new()->email($existingPatient->email)->create();
@@ -65,7 +65,7 @@ describe('patients', function (): void {
         ]);
     });
 
-    it(description: 'does not change the password when updating a patient', closure: function (): void {
+    it('does not change the password when updating a patient', function (): void {
         $existingPatient = PatientFactory::new()->createOne();
         $originalPassword = $existingPatient->password;
 
@@ -80,8 +80,8 @@ describe('patients', function (): void {
     });
 
     it(
-        description: 'cannot update a patient with an email already used by another patient',
-        closure: function (): void {
+        'cannot update a patient with an email already used by another patient',
+        function (): void {
             $otherPatient = PatientFactory::new()->createOne();
             $existingPatient = PatientFactory::new()->createOne();
     
@@ -94,7 +94,7 @@ describe('patients', function (): void {
         }
     );
 
-    it(description: 'returns not found when the patient does not exist', closure: function (): void {
+    it('returns not found when the patient does not exist', function (): void {
         $data = UpdatePatientRequestFactory::new()->create();
 
         putJson(url('/api/patients/999999'), $data)
@@ -103,7 +103,7 @@ describe('patients', function (): void {
 
     it(
         'cannot update a patient with invalid data',
-        closure: function (string $field, string|array $value, string $errorField): void {
+        function (string $field, string|array $value, string $errorField): void {
             $existingPatient = PatientFactory::new()->createOne();
 
             $data = UpdatePatientRequestFactory::new()->create();

@@ -10,7 +10,7 @@ use function Pest\Laravel\getJson;
 
 describe('clinics', function (): void {
     /** @see ListClinicController */
-    it(description: 'can list clinics with their doctors count', closure: function (): void {
+    it('can list clinics with their doctors count', function (): void {
         $clinics = ClinicFactory::new()
             ->hasDoctors(DoctorFactory::new()->count(2))
             ->createMany(4)
@@ -28,13 +28,13 @@ describe('clinics', function (): void {
             ->assertJsonPath('data', $expectedResponse['data']);
     });
 
-    it(description: 'returns an empty list when there are no clinics', closure: function (): void {
+    it('returns an empty list when there are no clinics', function (): void {
         getJson(url('/api/clinics'))
             ->assertOk()
             ->assertJsonCount(0, 'data');
     });
 
-    it(description: 'can filter clinics by name', closure: function (): void {
+    it('can filter clinics by name', function (): void {
         ClinicFactory::new()->name('Mayo')->createOne();
         ClinicFactory::new()->name('Cleveland')->createOne();
 

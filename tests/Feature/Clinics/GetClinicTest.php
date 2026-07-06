@@ -11,7 +11,7 @@ use function Pest\Laravel\getJson;
 
 describe('clinics', function (): void {
     /** @see GetClinicController */
-    it(description: 'can get a clinic with doctors successfully', closure: function (): void {
+    it('can get a clinic with doctors successfully', function (): void {
         $clinic = ClinicFactory::new()
             ->hasDoctors(DoctorFactory::new()->count(2))
             ->createOne()
@@ -25,12 +25,12 @@ describe('clinics', function (): void {
             ->assertJsonPath('data', $expected['data']);
     });
 
-    it(description: 'returns not found when the clinic does not exist', closure: function (): void {
+    it('returns not found when the clinic does not exist', function (): void {
         getJson(url('/api/clinics/999999'))
             ->assertNotFound();
     });
 
-    it(description: 'returns not found when the clinic was deleted', closure: function (): void {
+    it('returns not found when the clinic was deleted', function (): void {
         $clinic = ClinicFactory::new()->createOne();
 
         deleteJson(url("/api/clinics/$clinic->id"));

@@ -13,10 +13,10 @@ use function Pest\Laravel\postJson;
 
 function getLongName(): string
 {
-    return Str::repeat(string: 'longg', times: random_int(min: 55, max: 60));
+    return Str::repeat('longg', random_int(55, 60));
 }
 
-dataset(name: 'validation-rules', dataset: [
+dataset('validation-rules', [
     'name is required' => ['name', '', 'name'],
     'name be a string' => ['name', ['array'], 'name'],
     'name not too short' => ['name', 'ams', 'name'],
@@ -29,7 +29,7 @@ dataset(name: 'validation-rules', dataset: [
 
 describe('doctors', function (): void {
     /** @see StoreDoctorController */
-    it(description: 'can create a doctor with clinics successfully', closure: function (): void {
+    it('can create a doctor with clinics successfully', function (): void {
         $data = StoreDoctorRequestFactory::new()->create();
 
         $response = postJson(url('/api/doctors'), $data);
@@ -61,7 +61,7 @@ describe('doctors', function (): void {
         ]);
     });
 
-    it(description: 'can create a doctor without clinics', closure: function (): void {
+    it('can create a doctor without clinics', function (): void {
         $data = StoreDoctorRequestFactory::new()->without('clinics')->create();
 
         $response = postJson(url('/api/doctors'), $data);
@@ -84,7 +84,7 @@ describe('doctors', function (): void {
         ]);
     });
 
-    it(description: 'cannot create a doctor with unexisting clinic', closure: function (): void {
+    it('cannot create a doctor with unexisting clinic', function (): void {
         $data = StoreDoctorRequestFactory::new()->state(['clinics' => [0]])->create();
 
         $response = postJson(url('/api/doctors'), $data);
@@ -98,7 +98,7 @@ describe('doctors', function (): void {
 
     it(
         'cannot create a doctor with invalid data',
-        closure: function (string $field, string|array $value, string $errorField): void {
+        function (string $field, string|array $value, string $errorField): void {
             $data = StoreDoctorRequestFactory::new()->create();
 
             $response = postJson(url('/api/doctors'), [...$data, $field => $value]);
