@@ -40,6 +40,17 @@ class AppointmentFactory extends Factory
         ];
     }
 
+    public function configure(): self
+    {
+        return $this->afterCreating(
+            function (Appointment $appointment): void {
+                $appointment->doctor
+                    ->clinics()
+                    ->syncWithoutDetaching($appointment->clinic_id);
+            }
+        );
+    }
+
     public function forClinic(Clinic|ClinicFactory $clinic): self
     {
         return $this->for($clinic, 'clinic');
