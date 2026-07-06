@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
+use Carbon\CarbonImmutable;
+use Database\Factories\AppointmentFactory;
 use Database\Factories\PatientFactory;
 use Lightit\Appointments\App\Resources\AppointmentResource;
 use Lightit\Appointments\Domain\Models\Appointment;
+use Lightit\Doctors\Domain\Models\Doctor;
 use Tests\RequestFactories\UpsertAppointmentRequestFactory;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
@@ -57,6 +60,40 @@ describe('appointments', function (): void {
 
         postJson(url('api/appointments'), $data)
             ->assertUnauthorized();
+    });
+
+    it('cannot create an appointment when the doctor is already booked', function (): void {
+        $patient = PatientFactory::new()->createOne();
+        $startsAt = CarbonImmutable::now()->addDays(3);
+
+        $data = UpsertAppointmentRequestFactory::new()->startsAt($startsAt)->create();
+
+        AppointmentFactory::new()
+            ->forDoctor(Doctor::query()->findOrFail($data['doctor']))
+            ->startsAt($startsAt)
+            ->createOne();
+
+        actingAs($patient)
+            ->postJson(url('api/appointments'), $data)
+            ->assertConflict()
+            ->assertJsonPath('error.code', 'doctor_not_available');
+    });
+
+    it('cannot create an appointment when the patient is already booked', function (): void {
+        $patient = PatientFactory::new()->createOne();
+        $startsAt = CarbonImmutable::now()->addDays(3);
+
+        $data = UpsertAppointmentRequestFactory::new()->startsAt($startsAt)->create();
+
+        AppointmentFactory::new()
+            ->forPatient($patient)
+            ->startsAt($startsAt)
+            ->createOne();
+
+        actingAs($patient)
+            ->postJson(url('api/appointments'), $data)
+            ->assertConflict()
+            ->assertJsonPath('error.code', 'patient_not_available');
     });
 
     it(
