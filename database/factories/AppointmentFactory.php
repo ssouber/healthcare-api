@@ -26,15 +26,17 @@ class AppointmentFactory extends Factory
      */
     public function definition(): array
     {
-        $startAt = CarbonImmutable::now()->addDay();
+        $startsAt = CarbonImmutable::parse(
+            fake()->dateTimeBetween('+1 day', '+1 month')
+        );
 
         return [
             'clinic_id' => ClinicFactory::new(),
             'doctor_id' => DoctorFactory::new(),
             'patient_id' => PatientFactory::new(),
             'status' => AppointmentStatus::SCHEDULED,
-            'starts_at' => $startAt,
-            'ends_at' => $startAt->addHour(),
+            'starts_at' => $startsAt,
+            'ends_at' => $startsAt->addHour(),
         ];
     }
 
