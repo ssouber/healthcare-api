@@ -68,8 +68,11 @@ describe('appointments', function (): void {
 
         $data = UpsertAppointmentRequestFactory::new()->startsAt($startsAt)->create();
 
+        /** @var Doctor $doctor */
+        $doctor = Doctor::query()->findOrFail($data['doctor']);
+
         AppointmentFactory::new()
-            ->forDoctor(Doctor::query()->findOrFail($data['doctor']))
+            ->forDoctor($doctor)
             ->startsAt($startsAt)
             ->createOne();
 
