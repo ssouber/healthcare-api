@@ -5,7 +5,7 @@ declare(strict_types=1);
 use Database\Factories\PatientFactory;
 use Lightit\Appointments\App\Resources\AppointmentResource;
 use Lightit\Appointments\Domain\Models\Appointment;
-use Tests\RequestFactories\StoreAppointmentRequestFactory;
+use Tests\RequestFactories\UpsertAppointmentRequestFactory;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
 use function Pest\Laravel\postJson;
@@ -30,7 +30,7 @@ describe('appointments', function (): void {
     it('stores an appointment', function (): void {
         $patient = PatientFactory::new()->createOne();
 
-        $data = StoreAppointmentRequestFactory::new()->create();
+        $data = UpsertAppointmentRequestFactory::new()->create();
 
         $response = actingAs($patient)->postJson(url('api/appointments'), $data);
 
@@ -53,7 +53,7 @@ describe('appointments', function (): void {
     });
 
     it('returns unauthorized', function (): void {
-        $data = StoreAppointmentRequestFactory::new()->create();
+        $data = UpsertAppointmentRequestFactory::new()->create();
 
         postJson(url('api/appointments'), $data)
             ->assertUnauthorized();
@@ -63,7 +63,7 @@ describe('appointments', function (): void {
         description: 'cannot create an appointment with invalid data',
         closure: function (string $field, string|int $value, string $errorField): void {
             $patient = PatientFactory::new()->createOne();
-            $data = StoreAppointmentRequestFactory::new()->create();
+            $data = UpsertAppointmentRequestFactory::new()->create();
 
             actingAs($patient)
                 ->postJson(url('api/appointments'), [...$data, $field => $value])

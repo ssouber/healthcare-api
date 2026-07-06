@@ -10,7 +10,7 @@ use Database\Factories\DoctorFactory;
 use Lightit\Shared\Domain\Enums\DateFormat;
 use Worksome\RequestFactories\RequestFactory;
 
-class StoreAppointmentRequestFactory extends RequestFactory
+class UpsertAppointmentRequestFactory extends RequestFactory
 {
     public function definition(): array
     {
@@ -27,5 +27,10 @@ class StoreAppointmentRequestFactory extends RequestFactory
             'clinic' => $doctor->clinics()->value('id'),
             'starts_at' => $startsAt->format(DateFormat::DATETIME->value),
         ];
+    }
+
+    public function startsAt(CarbonImmutable $startsAt): self
+    {
+        return $this->state(['start_at' => $startsAt->format(DateFormat::DATETIME->value)]);
     }
 }
