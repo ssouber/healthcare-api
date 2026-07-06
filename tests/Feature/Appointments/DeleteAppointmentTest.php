@@ -9,7 +9,6 @@ use Lightit\Appointments\Domain\Enums\AppointmentStatus;
 use Lightit\Appointments\Domain\Models\Appointment;
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
-use function Pest\Laravel\assertNotSoftDeleted;
 use function Pest\Laravel\assertSoftDeleted;
 use function Pest\Laravel\deleteJson;
 
@@ -45,13 +44,11 @@ describe('appointments', function (): void {
             ->deleteJson(url("api/appointments/$appointment->id"))
             ->assertNoContent();
 
-        assertNotSoftDeleted(Appointment::class, [
-            'id' => $appointment->id,
-        ]);
 
         assertDatabaseHas(Appointment::class, [
             'id' => $appointment->id,
             'status' => AppointmentStatus::CANCELLED->value,
+            'deleted_at' => null,
         ]);
     });
 
