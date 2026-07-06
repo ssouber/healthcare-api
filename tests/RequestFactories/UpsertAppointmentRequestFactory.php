@@ -31,6 +31,6 @@ class UpsertAppointmentRequestFactory extends RequestFactory
 
     public function startsAt(CarbonImmutable $startsAt): self
     {
-        return $this->state(['start_at' => $startsAt->format(DateFormat::DATETIME->value)]);
+        return $this->state(['starts_at' => $startsAt->format(DateFormat::DATETIME->value)]);
     }
 }
