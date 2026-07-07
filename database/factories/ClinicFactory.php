@@ -27,4 +27,14 @@ class ClinicFactory extends Factory
             'address' => fake()->address(),
         ];
     }
+
+    public function name(string $name): self
+    {
+        return $this->set('name', $name);
+    }
+
+    public function hasDoctors(DoctorFactory $factory): self
+    {
+        return $this->has($factory, 'doctors');
+    }
 }

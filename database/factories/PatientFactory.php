@@ -34,4 +34,15 @@ class PatientFactory extends Factory
             'password' => static::$password ??= Hash::make('Healthcare2027!'),
         ];
     }
+
+    public function name(string $name): self
+    {
+        return $this->set('name', $name);
+    }
+
+    public function email(string $email): self
+    {
+        return $this->set('email', $email);
+    }
+
 }
